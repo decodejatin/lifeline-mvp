@@ -1,0 +1,38 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Product {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  title       String
+  description String?
+  brand       String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  priceHistory PriceHistory[]
+  affiliateClicks AffiliateClick[]
+}
+
+model PriceHistory {
+  id        String   @id @default(cuid())
+  product   Product  @relation(fields: [productId], references: [id])
+  productId String
+  price     Int
+  source    String   // e.g., "amazon", "flipkart"
+  recordedAt DateTime @default(now())
+}
+
+model AffiliateClick {
+  id          String   @id @default(cuid())
+  product     Product? @relation(fields: [productId], references: [id])
+  productId   String?
+  source      String
+  affiliateUrl String
+  clickedAt   DateTime @default(now())
+}

@@ -1,0 +1,13 @@
+@import "tailwindcss";
+
+@layer base {
+  html, body, #__next {
+    height: 100%;
+  }
+
+  body {
+    @apply bg-white text-slate-900 antialiased;
+  }
+}
+
+/* TODO: Add design tokens and shadcn/ui integration */

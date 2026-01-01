@@ -1,0 +1,33 @@
+{
+  "name": "lifeline-mvp",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "prisma generate && next build",
+    "start": "next start",
+    "lint": "next lint",
+    "db:seed": "prisma db seed",
+    "db:push": "prisma db push",
+    "db:migrate": "prisma migrate dev"
+  },
+  "dependencies": {
+    "@prisma/client": "5.10.0",
+    "next": "14.0.0",
+    "react": "18.2.0",
+    "react-dom": "18.2.0"
+  },
+  "prisma": {
+    "seed": "ts-node --transpile-only prisma/seed.ts"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.1.18",
+    "@types/node": "25.0.3",
+    "@types/react": "19.2.7",
+    "autoprefixer": "10.4.0",
+    "postcss": "8.4.0",
+    "prisma": "5.10.0",
+    "tailwindcss": "4.0.0",
+    "typescript": "5.1.6"
+  }
+}
