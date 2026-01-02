@@ -25,12 +25,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title: `${product.title} — Best Price ₹${bestPrice} | Lifeline`,
     description: `${product.description} Compare prices on ${product.title} across Amazon and Flipkart. Best price: ₹${bestPrice}. Check price history and buy via affiliate links.`,
     keywords: `${product.title}, mobile price, compare ${product.title}, ${product.title} price in India, buy ${product.title}`,
-    canonical: canonicalUrl,
+    alternates: {
+      canonical: canonicalUrl,
+    },
     openGraph: {
       title: `${product.title} — Best Price ₹${bestPrice}`,
       description: `Compare ${product.title} prices across stores. Best: ₹${bestPrice}`,
       url: canonicalUrl,
-      type: 'product',
+      type: 'website',
       images: [
         {
           url: `${siteUrl}/products/${product.slug}/og-image.png`,

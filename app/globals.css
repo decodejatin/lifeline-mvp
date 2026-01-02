@@ -1,13 +1,57 @@
 @import "tailwindcss";
 
 @layer base {
-  html, body, #__next {
+
+
+  html,
+  body,
+  #__next {
     height: 100%;
   }
 
   body {
-    @apply bg-white text-slate-900 antialiased;
+    @apply bg-slate-50 text-slate-900 antialiased;
+    font-family: var(--font-body);
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-heading);
   }
 }
 
-/* TODO: Add design tokens and shadcn/ui integration */
+@layer utilities {
+  .glass {
+    @apply bg-white/70 backdrop-blur-md border border-white/20;
+  }
+
+  .glass-dark {
+    @apply bg-slate-900/80 backdrop-blur-md border border-white/10;
+  }
+
+  .shadow-soft {
+    box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.05);
+  }
+
+  .text-gradient {
+    @apply bg-clip-text text-transparent bg-linear-to-r from-blue-600 to-violet-600;
+  }
+}
+
+/* Custom Scrollbar for nicer comparison scrolling */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-slate-200 rounded-full hover:bg-slate-300;
+}

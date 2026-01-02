@@ -38,8 +38,10 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     },
     async session({ session, token }) {
       if (session.user) {
-        (session.user as any).role = token.role
-        (session.user as any).id = token.id
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        (session.user as any).role = (token.role as string) || 'user';
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        (session.user as any).id = (token.id as string);
       }
       return session
     }

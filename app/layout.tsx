@@ -1,5 +1,18 @@
 import './globals.css'
 import React from 'react'
+import { Inter, Outfit } from 'next/font/google'
+
+const inter = Inter({
+  subsets: ['latin'],
+  variable: '--font-body',
+  display: 'swap',
+})
+
+const outfit = Outfit({
+  subsets: ['latin'],
+  variable: '--font-heading',
+  display: 'swap',
+})
 
 export const metadata = {
   title: 'Lifeline — Compare mobiles & save with verified affiliate deals',
@@ -39,9 +52,9 @@ export const metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="en" className={`${inter.variable} ${outfit.variable}`}>
       <head />
-      <body className="min-h-screen bg-slate-50">
+      <body className="min-h-screen bg-slate-50 font-body">
         <header className="border-b bg-white">
           <div className="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
             <a href="/" className="text-lg font-semibold">Lifeline</a>
