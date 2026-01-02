@@ -22,8 +22,10 @@ type Product = {
 }
 
 export default function CompareView({ a, b }: { a: Product; b: Product }) {
-  const bestPriceA = Math.min(...a.currentPrices.map((x) => x.price))
-  const bestPriceB = Math.min(...b.currentPrices.map((x) => x.price))
+  const pricesA = a.currentPrices || []
+  const pricesB = b.currentPrices || []
+  const bestPriceA = pricesA.length > 0 ? Math.min(...pricesA.map((x) => x.price)) : 0
+  const bestPriceB = pricesB.length > 0 ? Math.min(...pricesB.map((x) => x.price)) : 0
   const priceDiff = bestPriceA - bestPriceB
 
   // Safe fallback if specs are missing (e.g. old data)
@@ -38,30 +40,38 @@ export default function CompareView({ a, b }: { a: Product; b: Product }) {
       <CompareHeader a={a} b={b} />
 
       {/* Pricing Card (The most important part!) */}
-      <div className="grid grid-cols-2 gap-4 mb-4">
-        <div className={`p-6 rounded-3xl border transition-all ${bestPriceA < bestPriceB ? 'bg-green-50 border-green-200 ring-4 ring-green-100/50 shadow-xl' : 'bg-white border-slate-200'}`}>
+      <div className="grid grid-cols-2 gap-4 mb-4 animate-fade-in-up animate-delay-200">
+        <div className={`p-6 rounded-3xl border transition-all relative overflow-hidden group ${bestPriceA > 0 && bestPriceA < bestPriceB ? 'bg-green-50/90 border-green-200 ring-4 ring-green-100/50 shadow-xl' : 'glass hover:bg-white/80'}`}>
           <div className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-1">Best Price</div>
-          <div className={`text-2xl md:text-3xl font-black ${bestPriceA < bestPriceB ? 'text-green-700' : 'text-slate-900'}`}>
-            ₹{bestPriceA.toLocaleString()}
+          <div className={`text-2xl md:text-3xl font-black ${bestPriceA > 0 && bestPriceA < bestPriceB ? 'text-green-700' : 'text-slate-900'}`}>
+            {bestPriceA > 0 ? `₹${bestPriceA.toLocaleString()}` : 'N/A'}
           </div>
-          <a href={a.currentPrices[0]?.url} target="_blank" className="mt-4 block text-center w-full py-2 rounded-lg bg-slate-900 text-white text-sm font-bold hover:bg-slate-800 transition-colors">
-            Buy Now
-          </a>
+          {pricesA[0]?.url ? (
+            <a href={pricesA[0].url} target="_blank" className="mt-4 block text-center w-full py-2.5 rounded-xl bg-slate-900 text-white text-sm font-bold hover:bg-slate-800 hover:scale-[1.02] transition-all shadow-lg shadow-slate-900/20">
+              Buy Now
+            </a>
+          ) : (
+            <div className="mt-4 py-2.5 text-center text-sm text-slate-400 font-medium">Out of stock</div>
+          )}
         </div>
 
-        <div className={`p-6 rounded-3xl border transition-all ${bestPriceB < bestPriceA ? 'bg-green-50 border-green-200 ring-4 ring-green-100/50 shadow-xl' : 'bg-white border-slate-200'}`}>
+        <div className={`p-6 rounded-3xl border transition-all relative overflow-hidden group ${bestPriceB > 0 && bestPriceB < bestPriceA ? 'bg-green-50/90 border-green-200 ring-4 ring-green-100/50 shadow-xl' : 'glass hover:bg-white/80'}`}>
           <div className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-1">Best Price</div>
-          <div className={`text-2xl md:text-3xl font-black ${bestPriceB < bestPriceA ? 'text-green-700' : 'text-slate-900'}`}>
-            ₹{bestPriceB.toLocaleString()}
+          <div className={`text-2xl md:text-3xl font-black ${bestPriceB > 0 && bestPriceB < bestPriceA ? 'text-green-700' : 'text-slate-900'}`}>
+            {bestPriceB > 0 ? `₹${bestPriceB.toLocaleString()}` : 'N/A'}
           </div>
-          <a href={b.currentPrices[0]?.url} target="_blank" className="mt-4 block text-center w-full py-2 rounded-lg bg-slate-900 text-white text-sm font-bold hover:bg-slate-800 transition-colors">
-            Buy Now
-          </a>
+          {pricesB[0]?.url ? (
+            <a href={pricesB[0].url} target="_blank" className="mt-4 block text-center w-full py-2.5 rounded-xl bg-slate-900 text-white text-sm font-bold hover:bg-slate-800 hover:scale-[1.02] transition-all shadow-lg shadow-slate-900/20">
+              Buy Now
+            </a>
+          ) : (
+            <div className="mt-4 py-2.5 text-center text-sm text-slate-400 font-medium">Out of stock</div>
+          )}
         </div>
       </div>
 
       {/* 🚀 NEW: The Beastly Radar Analysis */}
-      <div className="mb-8 overflow-hidden rounded-3xl bg-slate-900 text-white shadow-2xl ring-1 ring-white/10">
+      <div className="mb-8 overflow-hidden rounded-3xl bg-slate-900 text-white shadow-2xl ring-1 ring-white/10 animate-fade-in-up animate-delay-300">
         <div className="p-6 md:p-8 grid md:grid-cols-2 items-center gap-8">
           <div>
             <h3 className="text-2xl font-bold font-heading mb-2 bg-gradient-to-r from-blue-400 to-violet-400 bg-clip-text text-transparent">Lifeline DNA Analysis</h3>
@@ -99,7 +109,7 @@ export default function CompareView({ a, b }: { a: Product; b: Product }) {
       </div>
 
       {/* Spec Sections */}
-      <div className="space-y-6">
+      <div className="space-y-6 animate-fade-in-up animate-delay-300">
         <SpecSection title="Display" iconKey="display" dataA={sA.display} dataB={sB.display} />
         <SpecSection title="Performance" iconKey="processor" dataA={sA.processor} dataB={sB.processor} />
         <SpecSection title="Cameras" iconKey="camera" dataA={sA.camera} dataB={sB.camera} />

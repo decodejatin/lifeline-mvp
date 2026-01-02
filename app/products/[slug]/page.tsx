@@ -99,52 +99,54 @@ export default async function ProductPage({ params }: Props) {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(productSchema) }} />
-      <article className="max-w-4xl">
-        <div className="mb-4">
-          <a href="/products" className="text-sm text-slate-600 hover:text-slate-900">← Back to products</a>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="md:col-span-2">
-            <h1 className="text-3xl font-bold mb-2">{product.title}</h1>
-            <p className="text-lg text-slate-600 mb-4">{product.description}</p>
-
-            <div className="bg-amber-50 border-l-4 border-amber-500 p-4 mb-6">
-              <div className="text-sm text-slate-600">Best Price Available</div>
-              <div className="text-3xl font-bold text-amber-600">₹{bestPrice.toLocaleString('en-IN')}</div>
-            </div>
-
-            <section className="mb-8">
-              <h2 className="text-xl font-semibold mb-4">Price Comparison</h2>
-              <PriceComparison prices={product.currentPrices} />
-            </section>
-
-            <section className="mb-8">
-              <h2 className="text-xl font-semibold mb-4">Price History</h2>
-              <PriceHistoryChart history={product.priceHistory} />
-            </section>
+      <div className="max-w-6xl mx-auto px-4 py-8">
+        <article className="max-w-4xl mx-auto">
+          <div className="mb-4">
+            <a href="/products" className="text-sm text-slate-600 hover:text-slate-900">← Back to products</a>
           </div>
 
-          <aside className="bg-white rounded border p-4 h-fit">
-            <h3 className="font-semibold mb-4">Buy Now</h3>
-            <div className="space-y-3">
-              <a
-                href={`/api/affiliate?productId=${product.id}&source=amazon&url=${encodeURIComponent(affiliateAmazon)}`}
-                className="block w-full px-4 py-3 bg-amber-500 hover:bg-amber-600 text-white text-center rounded font-semibold transition"
-              >
-                Buy on Amazon
-              </a>
-              <a
-                href={`/api/affiliate?productId=${product.id}&source=flipkart&url=${encodeURIComponent(affiliateFlipkart)}`}
-                className="block w-full px-4 py-3 bg-blue-600 hover:bg-blue-700 text-white text-center rounded font-semibold transition"
-              >
-                Buy on Flipkart
-              </a>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="md:col-span-2">
+              <h1 className="text-3xl font-bold mb-2">{product.title}</h1>
+              <p className="text-lg text-slate-600 mb-4">{product.description}</p>
+
+              <div className="bg-amber-50 border-l-4 border-amber-500 p-4 mb-6">
+                <div className="text-sm text-slate-600">Best Price Available</div>
+                <div className="text-3xl font-bold text-amber-600">₹{bestPrice.toLocaleString('en-IN')}</div>
+              </div>
+
+              <section className="mb-8">
+                <h2 className="text-xl font-semibold mb-4">Price Comparison</h2>
+                <PriceComparison prices={product.currentPrices} />
+              </section>
+
+              <section className="mb-8">
+                <h2 className="text-xl font-semibold mb-4">Price History</h2>
+                <PriceHistoryChart history={product.priceHistory} />
+              </section>
             </div>
-            <p className="text-xs text-slate-500 mt-4">We earn a commission from affiliate links at no extra cost to you.</p>
-          </aside>
-        </div>
-      </article>
+
+            <aside className="bg-white rounded border p-4 h-fit sticky top-24">
+              <h3 className="font-semibold mb-4">Buy Now</h3>
+              <div className="space-y-3">
+                <a
+                  href={`/api/affiliate?productId=${product.id}&source=amazon&url=${encodeURIComponent(affiliateAmazon)}`}
+                  className="block w-full px-4 py-3 bg-amber-500 hover:bg-amber-600 text-white text-center rounded font-semibold transition"
+                >
+                  Buy on Amazon
+                </a>
+                <a
+                  href={`/api/affiliate?productId=${product.id}&source=flipkart&url=${encodeURIComponent(affiliateFlipkart)}`}
+                  className="block w-full px-4 py-3 bg-blue-600 hover:bg-blue-700 text-white text-center rounded font-semibold transition"
+                >
+                  Buy on Flipkart
+                </a>
+              </div>
+              <p className="text-xs text-slate-500 mt-4">We earn a commission from affiliate links at no extra cost to you.</p>
+            </aside>
+          </div>
+        </article>
+      </div>
     </>
   )
 }

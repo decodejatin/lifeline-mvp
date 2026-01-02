@@ -1,6 +1,8 @@
 import './globals.css'
 import React from 'react'
 import { Inter, Outfit } from 'next/font/google'
+import Footer from '../components/Footer'
+import Header from '../components/Header'
 
 const inter = Inter({
   subsets: ['latin'],
@@ -54,19 +56,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" className={`${inter.variable} ${outfit.variable}`}>
       <head />
-      <body className="min-h-screen bg-slate-50 font-body">
-        <header className="border-b bg-white">
-          <div className="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
-            <a href="/" className="text-lg font-semibold">Lifeline</a>
-            <nav className="flex items-center gap-4">
-              <a href="/products" className="text-sm text-slate-700">Products</a>
-              <a href="/compare" className="text-sm text-slate-700">Compare</a>
-              <a href="/admin" className="text-sm text-slate-700">Admin</a>
-            </nav>
-          </div>
-        </header>
-        <main className="max-w-6xl mx-auto px-4 py-8">{children}</main>
-        <footer className="mt-12 text-center text-sm text-slate-500">© Lifeline — MVP</footer>
+      <body className="min-h-screen bg-slate-50 font-body flex flex-col">
+        <Header />
+        <main className="flex-grow w-full pt-24">{children}</main>
+        <Footer />
       </body>
     </html>
   )

@@ -23,8 +23,9 @@ export default function RatingRadar({ scoresA, scoresB }: Props) {
     // Convert score (0-10) to cartesian coordinates
     // axisIndex: 0=Top, 1=Right, 2=BottomRight...
     const getPoint = (score: number, axisIndex: number, totalAxes = 5) => {
+        const safeScore = isNaN(score) || score === undefined ? 0 : score
         const angle = (Math.PI * 2 * axisIndex) / totalAxes - Math.PI / 2
-        const distance = (score / 10) * radius
+        const distance = (safeScore / 10) * radius
         const x = center + distance * Math.cos(angle)
         const y = center + distance * Math.sin(angle)
         return { x, y }
