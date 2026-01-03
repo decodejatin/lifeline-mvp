@@ -3,6 +3,7 @@
 import React, { useEffect, useRef } from 'react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { motion } from 'framer-motion'
 
 if (typeof window !== 'undefined') {
     gsap.registerPlugin(ScrollTrigger)
@@ -29,7 +30,7 @@ type SpecProps = {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     dataA: Record<string, any>
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    dataB: Record<string, any>
+    dataB?: Record<string, any> // Made optional for single-product view
 }
 
 export default function SpecSection({ title, iconKey, dataA, dataB }: SpecProps) {
@@ -72,83 +73,87 @@ export default function SpecSection({ title, iconKey, dataA, dataB }: SpecProps)
 
     if (keys.length === 0) return null
 
+    const hasComparison = !!dataB
+
     return (
         <div
             ref={sectionRef}
-            className="relative bg-white/70 backdrop-blur-xl rounded-2xl shadow-soft border border-white/20 overflow-hidden mb-6 hover:shadow-xl transition-shadow duration-300"
+            className="relative bg-slate-900/50 backdrop-blur-xl rounded-[32px] border border-white/10 overflow-hidden mb-8 hover:border-white/20 transition-all duration-500 shadow-2xl"
         >
-            {/* Header with gradient background */}
-            <div className="relative bg-gradient-to-r from-slate-50 to-blue-50/30 px-6 py-4 border-b border-slate-100/50 flex items-center gap-3">
-                <div className="text-blue-600 bg-white p-2 rounded-xl shadow-sm">
+            {/* Header with glass effect */}
+            <div className="relative bg-white/5 px-8 py-5 border-b border-white/10 flex items-center gap-4">
+                <div className="text-blue-400 bg-blue-500/10 p-2.5 rounded-2xl border border-blue-500/20 shadow-[0_0_15px_rgba(59,130,246,0.2)]">
                     {Icons[iconKey] || Icons.display}
                 </div>
-                <h3 className="font-bold text-slate-800 text-lg">{title}</h3>
+                <h3 className="font-black text-white text-xl uppercase tracking-tighter">{title}</h3>
             </div>
 
-            <div className="divide-y divide-slate-50">
+            <div className="divide-y divide-white/5">
                 {keys.map((key, index) => {
                     const valA = dataA[key]
-                    const valB = dataB[key]
+                    const valB = dataB ? dataB[key] : undefined
                     const isArray = Array.isArray(valA)
-                    const isDifferent = valA !== valB
+                    const isDifferent = hasComparison && valA !== valB
 
                     return (
                         <div
                             key={key}
                             ref={(el) => { rowsRef.current[index] = el }}
-                            className="grid grid-cols-2 group hover:bg-gradient-to-r hover:from-blue-50/30 hover:to-violet-50/30 transition-all duration-300"
+                            className={`grid ${hasComparison ? 'grid-cols-2' : 'grid-cols-1 md:grid-cols-[200px_1fr]'} group hover:bg-white/5 transition-all duration-300`}
                         >
-                            {/* Column A */}
-                            <div className="p-4 border-r border-slate-50">
-                                <div className="text-[10px] uppercase tracking-wider font-semibold text-slate-400 mb-1.5">
+                            {/* Column A (or Label+Value in single view) */}
+                            <div className={`p-6 ${hasComparison ? 'border-r border-white/5' : ''}`}>
+                                <div className="text-[10px] uppercase font-black text-slate-500 tracking-[0.2em] mb-2 group-hover:text-blue-400 transition-colors">
                                     {formatKey(key)}
                                 </div>
-                                <div className="font-medium text-slate-700">
+                                <div className="font-bold text-slate-200">
                                     {isArray ? (
-                                        <div className="flex flex-wrap gap-1.5">
+                                        <div className="flex flex-wrap gap-2">
                                             {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
                                             {(valA as any[]).map((v: string) => (
                                                 <span
                                                     key={v}
-                                                    className="text-xs bg-gradient-to-r from-slate-100 to-slate-50 text-slate-600 px-2.5 py-1 rounded-lg border border-slate-200/50"
+                                                    className="text-[10px] font-black uppercase tracking-widest bg-white/5 text-blue-300 px-3 py-1.5 rounded-xl border border-white/5 group-hover:border-blue-500/30 transition-all"
                                                 >
                                                     {v}
                                                 </span>
                                             ))}
                                         </div>
                                     ) : (
-                                        <span className={isDifferent ? 'text-slate-900 font-semibold' : 'text-slate-600'}>
+                                        <span className={isDifferent ? 'text-blue-400 font-extrabold' : 'text-slate-200'}>
                                             {String(valA)}
                                         </span>
                                     )}
                                 </div>
                             </div>
 
-                            {/* Column B */}
-                            <div className="p-4">
-                                <div className="md:hidden text-[10px] uppercase tracking-wider font-semibold text-slate-400 mb-1.5">
-                                    {formatKey(key)}
+                            {/* Column B (only in comparison) */}
+                            {hasComparison && (
+                                <div className="p-6">
+                                    <div className="md:hidden text-[10px] uppercase font-black text-slate-500 tracking-[0.2em] mb-2">
+                                        {formatKey(key)}
+                                    </div>
+                                    <div className="font-bold text-slate-200">
+                                        {Array.isArray(valB) ? (
+                                            <div className="flex flex-wrap gap-2">
+                                                {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+                                                {(valB as any[]).map((v: string) => (
+                                                    <span
+                                                        key={v}
+                                                        className="text-[10px] font-black uppercase tracking-widest bg-white/5 text-violet-300 px-3 py-1.5 rounded-xl border border-white/5 group-hover:border-violet-500/30 transition-all"
+                                                    >
+                                                        {v}
+                                                    </span>
+                                                ))}
+                                            </div>
+                                        ) : (
+                                            <span className={isDifferent ? 'text-violet-400 font-extrabold' : 'text-slate-200'}>
+                                                {String(valB)}
+                                            </span>
+                                        )}
+                                    </div>
                                 </div>
-                                <div className="font-medium text-slate-700">
-                                    {isArray ? (
-                                        <div className="flex flex-wrap gap-1.5">
-                                            {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
-                                            {(valB as any[]).map((v: string) => (
-                                                <span
-                                                    key={v}
-                                                    className="text-xs bg-gradient-to-r from-slate-100 to-slate-50 text-slate-600 px-2.5 py-1 rounded-lg border border-slate-200/50"
-                                                >
-                                                    {v}
-                                                </span>
-                                            ))}
-                                        </div>
-                                    ) : (
-                                        <span className={isDifferent ? 'text-slate-900 font-semibold' : 'text-slate-600'}>
-                                            {String(valB)}
-                                        </span>
-                                    )}
-                                </div>
-                            </div>
+                            )}
                         </div>
                     )
                 })}

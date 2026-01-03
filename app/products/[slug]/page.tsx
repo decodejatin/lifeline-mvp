@@ -97,14 +97,14 @@ export default async function ProductPage({ params }: Props) {
                     <div className="flex flex-wrap gap-8 py-6 border-y border-white/5">
                       <div className="space-y-1">
                         <div className="text-[10px] font-black text-slate-500 uppercase tracking-[0.2em]">Efficiency</div>
-                        <div className="text-xl font-bold text-white uppercase">{s.processor?.chipset || 'N/A'}</div>
+                        <div className="text-xl font-bold text-white uppercase">{s.processor?.name || 'N/A'}</div>
                       </div>
                       <div className="space-y-1">
                         <div className="text-[10px] font-black text-slate-500 uppercase tracking-[0.2em]">Optics</div>
                         <div className="text-xl font-bold text-white uppercase">{s.camera?.main || 'N/A'}</div>
                       </div>
                       <div className="space-y-1">
-                        <div className="text-[10px) font-black text-slate-500 uppercase tracking-[0.2em]">Display</div>
+                        <div className="text-[10px] font-black text-slate-500 uppercase tracking-[0.2em]">Display</div>
                         <div className="text-xl font-bold text-white uppercase">{s.display?.size || 'N/A'}</div>
                       </div>
                     </div>
