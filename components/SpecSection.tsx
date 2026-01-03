@@ -1,4 +1,12 @@
-import React from 'react'
+'use client'
+
+import React, { useEffect, useRef } from 'react'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+
+if (typeof window !== 'undefined') {
+    gsap.registerPlugin(ScrollTrigger)
+}
 
 // Simple SVG Icons map
 const Icons: Record<string, React.ReactNode> = {
@@ -12,7 +20,7 @@ const Icons: Record<string, React.ReactNode> = {
     software: <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" /></svg>
 }
 
-// Utility to format keys nicely (e.g., "refreshRate" -> "Refresh Rate")
+// Utility to format keys nicely
 const formatKey = (key: string) => key.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase())
 
 type SpecProps = {
@@ -26,54 +34,116 @@ type SpecProps = {
 
 export default function SpecSection({ title, iconKey, dataA, dataB }: SpecProps) {
     const keys = Object.keys(dataA || {})
+    const sectionRef = useRef<HTMLDivElement>(null)
+    const rowsRef = useRef<(HTMLDivElement | null)[]>([])
+
+    useEffect(() => {
+        if (!sectionRef.current || keys.length === 0) return
+
+        const ctx = gsap.context(() => {
+            // Animate section entrance
+            gsap.from(sectionRef.current, {
+                opacity: 0,
+                y: 30,
+                duration: 0.6,
+                ease: 'power2.out',
+                scrollTrigger: {
+                    trigger: sectionRef.current,
+                    start: 'top 85%',
+                },
+            })
+
+            // Stagger animate rows
+            gsap.from(rowsRef.current, {
+                opacity: 0,
+                x: -20,
+                duration: 0.4,
+                stagger: 0.05,
+                ease: 'power2.out',
+                scrollTrigger: {
+                    trigger: sectionRef.current,
+                    start: 'top 80%',
+                },
+            })
+        }, sectionRef)
+
+        return () => ctx.revert()
+    }, [keys.length])
 
     if (keys.length === 0) return null
 
     return (
-        <div className="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden mb-6">
-            <div className="bg-slate-50/50 px-6 py-4 border-b border-slate-100 flex items-center gap-2">
-                <div className="text-blue-600 bg-blue-50 p-1.5 rounded-lg">
+        <div
+            ref={sectionRef}
+            className="relative bg-white/70 backdrop-blur-xl rounded-2xl shadow-soft border border-white/20 overflow-hidden mb-6 hover:shadow-xl transition-shadow duration-300"
+        >
+            {/* Header with gradient background */}
+            <div className="relative bg-gradient-to-r from-slate-50 to-blue-50/30 px-6 py-4 border-b border-slate-100/50 flex items-center gap-3">
+                <div className="text-blue-600 bg-white p-2 rounded-xl shadow-sm">
                     {Icons[iconKey] || Icons.display}
                 </div>
                 <h3 className="font-bold text-slate-800 text-lg">{title}</h3>
             </div>
 
             <div className="divide-y divide-slate-50">
-                {keys.map((key) => {
+                {keys.map((key, index) => {
                     const valA = dataA[key]
                     const valB = dataB[key]
                     const isArray = Array.isArray(valA)
+                    const isDifferent = valA !== valB
 
                     return (
-                        <div key={key} className="grid grid-cols-2 group hover:bg-slate-50/50 transition-colors">
+                        <div
+                            key={key}
+                            ref={(el) => { rowsRef.current[index] = el }}
+                            className="grid grid-cols-2 group hover:bg-gradient-to-r hover:from-blue-50/30 hover:to-violet-50/30 transition-all duration-300"
+                        >
+                            {/* Column A */}
                             <div className="p-4 border-r border-slate-50">
-                                <div className="text-[10px] uppercase tracking-wider font-semibold text-slate-400 mb-1">{formatKey(key)}</div>
+                                <div className="text-[10px] uppercase tracking-wider font-semibold text-slate-400 mb-1.5">
+                                    {formatKey(key)}
+                                </div>
                                 <div className="font-medium text-slate-700">
                                     {isArray ? (
-                                        <div className="flex flex-wrap gap-1">
+                                        <div className="flex flex-wrap gap-1.5">
                                             {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
                                             {(valA as any[]).map((v: string) => (
-                                                <span key={v} className="text-xs bg-slate-100 text-slate-600 px-2 py-0.5 rounded">{v}</span>
+                                                <span
+                                                    key={v}
+                                                    className="text-xs bg-gradient-to-r from-slate-100 to-slate-50 text-slate-600 px-2.5 py-1 rounded-lg border border-slate-200/50"
+                                                >
+                                                    {v}
+                                                </span>
                                             ))}
                                         </div>
                                     ) : (
-                                        String(valA)
+                                        <span className={isDifferent ? 'text-slate-900 font-semibold' : 'text-slate-600'}>
+                                            {String(valA)}
+                                        </span>
                                     )}
                                 </div>
                             </div>
 
+                            {/* Column B */}
                             <div className="p-4">
-                                <div className="md:hidden text-[10px] uppercase tracking-wider font-semibold text-slate-400 mb-1">{formatKey(key)}</div>
+                                <div className="md:hidden text-[10px] uppercase tracking-wider font-semibold text-slate-400 mb-1.5">
+                                    {formatKey(key)}
+                                </div>
                                 <div className="font-medium text-slate-700">
                                     {isArray ? (
-                                        <div className="flex flex-wrap gap-1">
+                                        <div className="flex flex-wrap gap-1.5">
                                             {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
                                             {(valB as any[]).map((v: string) => (
-                                                <span key={v} className="text-xs bg-slate-100 text-slate-600 px-2 py-0.5 rounded">{v}</span>
+                                                <span
+                                                    key={v}
+                                                    className="text-xs bg-gradient-to-r from-slate-100 to-slate-50 text-slate-600 px-2.5 py-1 rounded-lg border border-slate-200/50"
+                                                >
+                                                    {v}
+                                                </span>
                                             ))}
                                         </div>
                                     ) : (
-                                        <span className={valA === valB ? 'text-slate-500' : 'text-slate-900 font-semibold'}>
+                                        <span className={isDifferent ? 'text-slate-900 font-semibold' : 'text-slate-600'}>
                                             {String(valB)}
                                         </span>
                                     )}

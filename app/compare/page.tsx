@@ -2,6 +2,9 @@ import React from 'react'
 import { PRODUCTS } from '../../lib/mockData'
 import CompareView from '../../components/CompareView'
 import CompareSelector from '../../components/CompareSelector'
+import GradientOrb from '../../components/ui/gradient-orb'
+import ParticleBackground from '../../components/ui/particle-background'
+import TextReveal from '../../components/animations/TextReveal'
 
 type Props = { searchParams?: { productA?: string; productB?: string } }
 
@@ -14,51 +17,81 @@ export default async function ComparePage({ searchParams }: Props) {
 
   return (
     <section className="relative min-h-screen">
-      {/* Background Gradients: Blue vs Orange (Fire vs Ice) */}
+      <ParticleBackground />
+
+      {/* Background Gradients */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none -z-10">
-        <div className="absolute top-20 left-[-10%] w-[500px] h-[500px] bg-blue-500/10 rounded-full blur-3xl opacity-60 mix-blend-multiply animate-pulse-slow"></div>
-        <div className="absolute top-40 right-[-10%] w-[500px] h-[500px] bg-orange-500/10 rounded-full blur-3xl opacity-60 mix-blend-multiply animate-pulse-slow"></div>
+        <GradientOrb color1="rgba(59, 130, 246, 0.2)" color2="rgba(147, 51, 234, 0.1)" size={600} top="-10%" left="-10%" />
+        <GradientOrb color1="rgba(236, 72, 153, 0.1)" color2="rgba(59, 130, 246, 0.1)" size={500} bottom="10%" right="-10%" />
       </div>
 
-      <div className="max-w-6xl mx-auto px-4 py-8">
-        <div className="text-center mb-10 pt-8 animate-fade-in-up">
-          <h1 className="text-4xl font-bold mb-4 font-heading">Compare <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-orange-500">Powerhouses</span></h1>
-          <p className="text-slate-600 mb-6 max-w-2xl mx-auto">Select two models to see a side-by-side battle of specs, features, and AI analysis.</p>
+      <div className="max-w-7xl mx-auto px-4 py-16 relative z-10">
+        <div className="text-center mb-16">
+          <div className="inline-block px-4 py-1.5 mb-6 rounded-full bg-white/5 border border-white/10 text-blue-400 text-[10px] font-black uppercase tracking-[0.3em]">
+            Precision Comparison
+          </div>
+          <h1 className="text-5xl md:text-7xl font-black mb-6 font-heading tracking-tighter text-white uppercase">
+            Spec <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 via-violet-500 to-pink-500 animate-gradient">Battleground</span>
+          </h1>
+          <p className="text-slate-400 text-lg md:text-xl max-w-2xl mx-auto font-medium">
+            Deploy two titans. Analyze every sensor, pixel, and megahertz in high fidelity.
+          </p>
 
-          <div className="max-w-4xl mx-auto">
+          <div className="max-w-4xl mx-auto mt-12">
             <CompareSelector products={productList} selectedA={productA} selectedB={productB} />
           </div>
         </div>
 
-        <div className="animate-fade-in-up animate-delay-100">
-          {a && b ? <CompareView a={a} b={b} /> : (
-            <div className="space-y-12">
-              <div className="text-center py-12 bg-white/50 backdrop-blur-sm rounded-3xl border border-white/60 mx-auto max-w-2xl shadow-sm">
-                <div className="text-6xl mb-4 animate-bounce">👇</div>
-                <h3 className="text-xl font-bold text-slate-800">Select two smartphones above</h3>
-                <p className="text-slate-500 mt-2">or choose a trending battle below</p>
+        <div className="space-y-20">
+          {a && b ? (
+            <CompareView a={a as any} b={b as any} />
+          ) : (
+            <div className="space-y-20">
+              <div className="relative group p-12 text-center rounded-[40px] bg-white/5 border border-white/10 backdrop-blur-xl max-w-2xl mx-auto overflow-hidden">
+                <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-violet-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                <div className="relative z-10">
+                  <div className="text-7xl mb-6 animate-float">⚔️</div>
+                  <h3 className="text-3xl font-black text-white uppercase tracking-tighter">Choose Your Contenders</h3>
+                  <p className="text-slate-400 mt-4 font-medium">Select two smartphones above to begin the deep spec-analysis.</p>
+                </div>
               </div>
 
               {/* Trending Battles */}
-              <div>
-                <h3 className="text-2xl font-bold text-slate-800 mb-6 text-center font-heading">Trending Battles 🔥</h3>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div className="space-y-8">
+                <div className="flex items-center gap-6 px-4">
+                  <h3 className="text-2xl font-black text-white uppercase tracking-tighter whitespace-nowrap">Trending Battles</h3>
+                  <div className="h-px w-full bg-gradient-to-r from-white/10 to-transparent" />
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                   {[
-                    { a: 'iphone-15-pro', b: 'samsung-s24-ultra', title: 'Flagship War' },
-                    { a: 'oneplus-12r', b: 'pixel-8a', title: 'Mid-Range Kings' },
-                    { a: 'samsung-s24-ultra', b: 'pixel-8-pro', title: 'Android Apex' }
+                    { a: 'alpha-phone-x', b: 'beta-phone-pro', title: 'Performance War', gradient: 'from-blue-600/20 to-cyan-400/20' },
+                    { a: 'beta-phone-pro', b: 'gamma-ultra-5g', title: 'Camera Siege', gradient: 'from-violet-600/20 to-pink-400/20' },
+                    { a: 'gamma-ultra-5g', b: 'alpha-phone-x', title: 'Endurance Clash', gradient: 'from-orange-600/20 to-yellow-400/20' }
                   ].map((battle, i) => (
                     <a
                       key={i}
                       href={`/compare?productA=${battle.a}&productB=${battle.b}`}
-                      className="group relative overflow-hidden bg-white hover:bg-white/80 p-6 rounded-2xl border border-white/20 shadow-lg transition-all hover:scale-[1.02] hover:-translate-y-1 block"
+                      className={`group relative p-8 rounded-[32px] bg-white/5 border border-white/10 hover:border-white/20 transition-all duration-500 hover:-translate-y-2 overflow-hidden`}
                     >
-                      <div className="absolute top-0 right-0 p-4 opacity-10 font-black text-6xl text-slate-200 group-hover:text-blue-100 transition">VS</div>
-                      <div className="text-xs font-bold text-blue-600 uppercase tracking-widest mb-2">{battle.title}</div>
-                      <div className="flex items-center justify-between text-slate-700 font-semibold group-hover:text-blue-700 transition">
-                        <span>{productList.find(p => p.slug === battle.a)?.title || 'Phone A'}</span>
-                        <span className="text-slate-300">/</span>
-                        <span>{productList.find(p => p.slug === battle.b)?.title || 'Phone B'}</span>
+                      <div className={`absolute inset-0 bg-gradient-to-br ${battle.gradient} opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
+                      <div className="relative z-10">
+                        <div className="text-[10px] font-black text-blue-400 uppercase tracking-widest mb-4">{battle.title}</div>
+                        <div className="flex flex-col gap-2">
+                          <div className="text-lg font-black text-white group-hover:text-blue-200 transition-colors truncate">
+                            {productList.find(p => p.slug === battle.a)?.title || 'Phone A'}
+                          </div>
+                          <div className="text-xs font-black text-slate-600 uppercase">VS</div>
+                          <div className="text-lg font-black text-white group-hover:text-violet-200 transition-colors truncate">
+                            {productList.find(p => p.slug === battle.b)?.title || 'Phone B'}
+                          </div>
+                        </div>
+                        <div className="mt-6 flex items-center gap-2 text-[10px] font-black text-white/40 uppercase tracking-widest group-hover:text-white transition-colors">
+                          View Battle
+                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                          </svg>
+                        </div>
                       </div>
                     </a>
                   ))}

@@ -1,14 +1,18 @@
 import React from 'react'
 import Link from 'next/link'
-import HomeControls from '../components/HomeControls'
 import { PRODUCTS } from '../lib/mockData'
-import ProductCard from '../components/ProductCard'
+import FlipCard from '../components/ui/flip-card'
+import ParticleBackground from '../components/ui/particle-background'
+import CustomCursor from '../components/ui/custom-cursor'
+import FloatingNav from '../components/ui/floating-nav'
+import GradientOrb from '../components/ui/gradient-orb'
+import TextReveal from '../components/animations/TextReveal'
+import MagneticButton from '../components/ui/magnetic-button'
 
 export default async function HomePage() {
-  const products = PRODUCTS
+  const products = PRODUCTS.slice(0, 6) // Show only 6 products
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'
 
-  // FAQ schema for SEO (kept from before, good practice)
   const faqSchema = {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',
@@ -34,98 +38,204 @@ export default async function HomePage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(orgSchema) }} />
 
-      <div className="max-w-6xl mx-auto px-4 py-8">
-        {/* Background Gradients */}
-        <div className="fixed inset-0 overflow-hidden pointer-events-none -z-10">
-          <div className="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-blue-400/20 rounded-full blur-3xl opacity-50 mix-blend-multiply"></div>
-          <div className="absolute top-[10%] right-[-10%] w-[500px] h-[500px] bg-purple-400/20 rounded-full blur-3xl opacity-50 mix-blend-multiply"></div>
-        </div>
+      {/* Custom Cursor */}
+      <CustomCursor />
 
-        <div className="space-y-20">
-          {/* HERO SECTION */}
-          <section className="text-center py-20 px-4 relative">
-            <div className="inline-block px-4 py-1.5 mb-6 rounded-full bg-blue-50 border border-blue-100 text-blue-600 text-xs font-semibold tracking-wide uppercase">
-              🚀 The Ultimate Mobile Buying Guide
+      {/* Floating Navigation */}
+      <FloatingNav />
+
+      {/* Particle Background */}
+      <ParticleBackground />
+
+      <div className="relative min-h-screen">
+        {/* Gradient Orbs */}
+        <GradientOrb color1="rgba(59, 130, 246, 0.4)" color2="rgba(147, 51, 234, 0.2)" size={600} top="-10%" left="-10%" delay={0} />
+        <GradientOrb color1="rgba(236, 72, 153, 0.3)" color2="rgba(59, 130, 246, 0.2)" size={500} top="20%" right="-10%" delay={0.3} />
+        <GradientOrb color1="rgba(147, 51, 234, 0.3)" color2="rgba(59, 130, 246, 0.2)" size={400} bottom="10%" left="10%" delay={0.6} />
+
+        {/* HERO SECTION */}
+        <section id="hero" className="relative min-h-screen flex items-center justify-center px-4 overflow-hidden">
+          <div className="max-w-6xl mx-auto text-center z-10">
+            {/* Badge */}
+            <div className="inline-flex items-center gap-2 px-4 py-2 mb-8 rounded-full bg-gradient-to-r from-blue-500/10 to-violet-500/10 border border-blue-500/20 backdrop-blur-sm">
+              <span className="relative flex h-3 w-3">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-3 w-3 bg-blue-500"></span>
+              </span>
+              <span className="text-sm font-semibold bg-gradient-to-r from-blue-600 to-violet-600 bg-clip-text text-transparent">
+                AI-Powered Comparison Engine
+              </span>
             </div>
-            <h1 className="text-5xl md:text-7xl font-bold mb-6 font-heading tracking-tight text-slate-900 animate-fade-in-up">
-              Find the <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-violet-600">Perfect Phone</span>
+
+            {/* Main Heading with Text Reveal */}
+            <h1 className="text-6xl md:text-8xl font-bold mb-6 font-heading tracking-tight">
+              <TextReveal as="span" className="block mb-4">
+                Find Your
+              </TextReveal>
+              <span className="block bg-gradient-to-r from-blue-500 via-violet-500 to-pink-500 bg-clip-text text-transparent animate-gradient">
+                Perfect Device
+              </span>
             </h1>
-            <p className="text-lg md:text-xl text-slate-600 max-w-2xl mx-auto mb-10 leading-relaxed animate-fade-in-up animate-delay-100">
-              Stop guessing. Start comparing. real-time prices, deep specs analysis, and AI-driven verdicts to help you choose the best device.
+
+            {/* Subtitle */}
+            <p className="text-xl md:text-2xl text-slate-300 max-w-3xl mx-auto mb-12 leading-relaxed">
+              Stop scrolling through endless reviews. Our AI analyzes{' '}
+              <span className="text-blue-400 font-semibold">real-time prices</span>,{' '}
+              <span className="text-violet-400 font-semibold">deep specs</span>, and{' '}
+              <span className="text-pink-400 font-semibold">expert ratings</span>{' '}
+              to find your perfect match.
             </p>
 
-            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center animate-fade-in-up animate-delay-200">
-              <Link
-                href="/compare"
-                className="px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-semibold text-lg transition shadow-lg shadow-blue-500/30 flex items-center gap-2 animate-pulse-slow"
-              >
-                Start Comparison
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
-              </Link>
+            {/* CTA Buttons */}
+            <div className="flex flex-col sm:flex-row gap-6 justify-center items-center mb-16">
+              <MagneticButton href="/compare" strength={0.4}>
+                <span className="flex items-center gap-2">
+                  Start Comparing
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                  </svg>
+                </span>
+              </MagneticButton>
+
               <Link
                 href="/products"
-                className="px-8 py-4 bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 rounded-xl font-semibold text-lg transition shadow-sm"
+                className="group px-8 py-4 rounded-full font-semibold text-lg transition-all duration-300 bg-white/5 hover:bg-white/10 text-white border border-white/20 hover:border-white/40 backdrop-blur-sm"
               >
-                Browse Phones
+                <span className="flex items-center gap-2">
+                  Browse All Phones
+                  <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  </svg>
+                </span>
               </Link>
             </div>
-          </section>
 
-          {/* FEATURES GRID */}
-          <section className="grid grid-cols-1 md:grid-cols-3 gap-8 px-4 animate-fade-in-up animate-delay-300">
-            <div className="glass p-8 rounded-2xl relative overflow-hidden group hover:scale-[1.02] transition duration-300">
-              <div className="absolute top-0 right-0 w-24 h-24 bg-blue-500/10 rounded-full blur-2xl -mr-12 -mt-12 group-hover:bg-blue-500/20 transition"></div>
-              <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center text-blue-600 mb-6">
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" /></svg>
+            {/* Stats */}
+            <div className="grid grid-cols-3 gap-8 max-w-2xl mx-auto">
+              <div className="text-center">
+                <div className="text-4xl font-bold bg-gradient-to-r from-blue-400 to-violet-400 bg-clip-text text-transparent mb-2">
+                  500+
+                </div>
+                <div className="text-sm text-slate-400">Phones Analyzed</div>
               </div>
-              <h3 className="text-xl font-bold mb-3 font-heading">AI Verdicts</h3>
-              <p className="text-slate-600 leading-relaxed">
-                Our algorithm analyzes processor, camera, and battery specs to give you a clear winner.
+              <div className="text-center">
+                <div className="text-4xl font-bold bg-gradient-to-r from-violet-400 to-pink-400 bg-clip-text text-transparent mb-2">
+                  10K+
+                </div>
+                <div className="text-sm text-slate-400">Comparisons Made</div>
+              </div>
+              <div className="text-center">
+                <div className="text-4xl font-bold bg-gradient-to-r from-pink-400 to-blue-400 bg-clip-text text-transparent mb-2">
+                  98%
+                </div>
+                <div className="text-sm text-slate-400">Satisfaction Rate</div>
+              </div>
+            </div>
+          </div>
+
+          {/* Scroll Indicator */}
+          <div className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce">
+            <svg className="w-6 h-6 text-white/50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+            </svg>
+          </div>
+        </section>
+
+        {/* FEATURES SECTION */}
+        <section id="features" className="relative py-32 px-4">
+          <div className="max-w-6xl mx-auto">
+            <div className="text-center mb-16">
+              <h2 className="text-5xl font-bold mb-4 bg-gradient-to-r from-blue-400 to-violet-400 bg-clip-text text-transparent">
+                Why Choose Lifeline?
+              </h2>
+              <p className="text-xl text-slate-400">
+                Powered by cutting-edge technology
               </p>
             </div>
 
-            <div className="glass p-8 rounded-2xl relative overflow-hidden group hover:scale-[1.02] transition duration-300">
-              <div className="absolute top-0 right-0 w-24 h-24 bg-purple-500/10 rounded-full blur-2xl -mr-12 -mt-12 group-hover:bg-purple-500/20 transition"></div>
-              <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center text-purple-600 mb-6">
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-              </div>
-              <h3 className="text-xl font-bold mb-3 font-heading">Live Prices</h3>
-              <p className="text-slate-600 leading-relaxed">
-                Real-time price tracking from Amazon and Flipkart. Never pay more than you need to.
-              </p>
-            </div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              {[
+                {
+                  icon: '🤖',
+                  title: 'AI Verdicts',
+                  description: 'Machine learning algorithms analyze thousands of data points to give you unbiased recommendations.',
+                  gradient: 'from-blue-500 to-cyan-500'
+                },
+                {
+                  icon: '⚡',
+                  title: 'Real-Time Prices',
+                  description: 'Live price tracking across Amazon and Flipkart. Never miss a deal or pay more than you should.',
+                  gradient: 'from-violet-500 to-purple-500'
+                },
+                {
+                  icon: '🔬',
+                  title: 'Deep Analysis',
+                  description: 'From camera sensors to charging speeds, we compare the specs that actually matter to you.',
+                  gradient: 'from-pink-500 to-rose-500'
+                }
+              ].map((feature, index) => (
+                <div
+                  key={index}
+                  className="group relative p-8 rounded-2xl bg-gradient-to-br from-slate-900/50 to-slate-800/50 border border-white/10 backdrop-blur-sm hover:border-white/20 transition-all duration-300 overflow-hidden"
+                >
+                  {/* Glow effect */}
+                  <div className={`absolute inset-0 bg-gradient-to-br ${feature.gradient} opacity-0 group-hover:opacity-10 transition-opacity duration-300`} />
 
-            <div className="glass p-8 rounded-2xl relative overflow-hidden group hover:scale-[1.02] transition duration-300">
-              <div className="absolute top-0 right-0 w-24 h-24 bg-amber-500/10 rounded-full blur-2xl -mr-12 -mt-12 group-hover:bg-amber-500/20 transition"></div>
-              <div className="w-12 h-12 bg-amber-100 rounded-lg flex items-center justify-center text-amber-600 mb-6">
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19.428 15.428a2 2 0 00-1.022-.547l-2.384-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" /></svg>
-              </div>
-              <h3 className="text-xl font-bold mb-3 font-heading">Deep Specs</h3>
-              <p className="text-slate-600 leading-relaxed">
-                From sensor sizes to charging wattage, we compare the details that actually matter.
-              </p>
-            </div>
-          </section>
+                  {/* Icon */}
+                  <div className="text-6xl mb-6">{feature.icon}</div>
 
-          {/* TRENDING SECTION */}
-          <section className="py-12">
-            <div className="mb-10 text-center">
-              <h2 className="text-3xl font-bold mb-2 font-heading">Trending Now</h2>
-              <p className="text-slate-600">Poplular models currently being compared</p>
-            </div>
+                  {/* Content */}
+                  <h3 className="text-2xl font-bold text-white mb-4">
+                    {feature.title}
+                  </h3>
+                  <p className="text-slate-400 leading-relaxed">
+                    {feature.description}
+                  </p>
 
-            {/* Reuse existing controls for filtering, but style them nicer? For MVP, standard is fine */}
-            <div className="mb-8">
-              <HomeControls products={products} />
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {products.map((p) => (
-                <ProductCard key={p.id} product={p} />
+                  {/* Hover indicator */}
+                  <div className="mt-6 flex items-center gap-2 text-sm font-semibold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-violet-400 opacity-0 group-hover:opacity-100 transition-opacity">
+                    Learn more
+                    <svg className="w-4 h-4 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                    </svg>
+                  </div>
+                </div>
               ))}
             </div>
-          </section>
-        </div>
+          </div>
+        </section>
+
+        {/* TRENDING SECTION */}
+        <section id="trending" className="relative py-32 px-4">
+          <div className="max-w-7xl mx-auto">
+            <div className="text-center mb-16">
+              <h2 className="text-5xl font-bold mb-4 bg-gradient-to-r from-violet-400 to-pink-400 bg-clip-text text-transparent">
+                Trending Battles
+              </h2>
+              <p className="text-xl text-slate-400">
+                Most compared phones this week
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {products.map((product, index) => (
+                <FlipCard key={product.id} product={product} index={index} />
+              ))}
+            </div>
+
+            <div className="text-center mt-12">
+              <Link
+                href="/products"
+                className="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-gradient-to-r from-blue-500 to-violet-500 text-white font-semibold hover:shadow-lg hover:shadow-blue-500/50 transition-all duration-300"
+              >
+                View All Phones
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                </svg>
+              </Link>
+            </div>
+          </div>
+        </section>
       </div>
     </>
   )

@@ -1,6 +1,8 @@
 "use client"
 import React, { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { motion } from 'framer-motion'
+import { cn } from '@/lib/utils'
 
 type Product = { id: string; slug: string; title: string; thumbnail?: string | null }
 
@@ -15,68 +17,82 @@ export default function CompareSelector({ products, selectedA, selectedB }: { pr
     }
   }
 
-  // Helper to find title
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const getProduct = (slug?: string) => products.find(p => p.slug === slug)
-
   return (
-    <div className="bg-white p-6 rounded-3xl shadow-soft border border-slate-100">
-      <div className="flex flex-col md:flex-row items-center gap-4">
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      className="p-1 rounded-[32px] bg-gradient-to-r from-blue-500/20 via-violet-500/20 to-pink-500/20 backdrop-blur-xl border border-white/10"
+    >
+      <div className="bg-slate-900/90 p-6 md:p-8 rounded-[28px] shadow-2xl">
+        <div className="flex flex-col md:flex-row items-center gap-6">
 
-        {/* Product A Selector */}
-        <div className="flex-1 w-full">
-          <label className="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Phone 1</label>
-          <div className="relative">
-            <select
-              className="w-full p-4 bg-slate-50 border-r-[16px] border-transparent outline-none rounded-xl font-semibold text-slate-700 focus:ring-2 focus:ring-blue-100 appearance-none cursor-pointer"
-              value={a || ''}
-              onChange={(e) => setA(e.target.value)}
-            >
-              <option value="">Select a phone...</option>
-              {products.map((p) => (
-                <option key={p.id} value={p.slug}>{p.title}</option>
-              ))}
-            </select>
-            <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400">
-              ▼
+          {/* Product A Selector */}
+          <div className="flex-1 w-full space-y-2">
+            <label className="block text-xs font-bold uppercase tracking-[0.2em] text-slate-500 ml-1">Device One</label>
+            <div className="relative group">
+              <select
+                className="w-full p-4 bg-slate-800/50 border border-white/5 outline-none rounded-2xl font-bold text-white focus:ring-2 focus:ring-blue-500/50 appearance-none cursor-pointer group-hover:bg-slate-700/50 transition-all"
+                value={a || ''}
+                onChange={(e) => setA(e.target.value)}
+              >
+                <option value="" className="bg-slate-900 text-slate-400">Choose first phone...</option>
+                {products.map((p) => (
+                  <option key={p.id} value={p.slug} className="bg-slate-900 text-white">{p.title}</option>
+                ))}
+              </select>
+              <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-slate-500">
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+              </div>
             </div>
           </div>
-        </div>
 
-        {/* VS Badge */}
-        <div className="shrink-0 w-12 h-12 rounded-full bg-slate-900 text-white flex items-center justify-center font-black italic text-lg shadow-lg z-10 -my-2 md:my-0">
-          VS
-        </div>
-
-        {/* Product B Selector */}
-        <div className="flex-1 w-full">
-          <label className="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Phone 2</label>
-          <div className="relative">
-            <select
-              className="w-full p-4 bg-slate-50 border-r-[16px] border-transparent outline-none rounded-xl font-semibold text-slate-700 focus:ring-2 focus:ring-blue-100 appearance-none cursor-pointer"
-              value={b || ''}
-              onChange={(e) => setB(e.target.value)}
-            >
-              <option value="">Select a phone...</option>
-              {products.map((p) => (
-                <option key={p.id} value={p.slug}>{p.title}</option>
-              ))}
-            </select>
-            <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400">
-              ▼
+          {/* VS Badge */}
+          <div className="relative shrink-0 w-16 h-16 rounded-full flex items-center justify-center -my-4 md:my-0 z-10 group">
+            <div className="absolute inset-0 bg-gradient-to-tr from-blue-600 to-violet-600 rounded-full animate-pulse blur-md opacity-50 group-hover:opacity-100 transition-opacity" />
+            <div className="relative w-full h-full bg-slate-900 rounded-full border-2 border-white/10 flex items-center justify-center font-black italic text-xl text-white shadow-2xl">
+              VS
             </div>
           </div>
-        </div>
 
-        {/* Action Button */}
-        <button
-          onClick={goCompare}
-          disabled={!a || !b || a === b}
-          className="w-full md:w-auto px-8 py-4 bg-blue-600 hover:bg-blue-700 disabled:bg-slate-200 disabled:text-slate-400 text-white font-bold rounded-xl transition-all shadow-lg hover:shadow-blue-500/30"
-        >
-          Compare Now
-        </button>
+          {/* Product B Selector */}
+          <div className="flex-1 w-full space-y-2">
+            <label className="block text-xs font-bold uppercase tracking-[0.2em] text-slate-500 ml-1">Device Two</label>
+            <div className="relative group">
+              <select
+                className="w-full p-4 bg-slate-800/50 border border-white/5 outline-none rounded-2xl font-bold text-white focus:ring-2 focus:ring-violet-500/50 appearance-none cursor-pointer group-hover:bg-slate-700/50 transition-all"
+                value={b || ''}
+                onChange={(e) => setB(e.target.value)}
+              >
+                <option value="" className="bg-slate-900 text-slate-400">Choose second phone...</option>
+                {products.map((p) => (
+                  <option key={p.id} value={p.slug} className="bg-slate-900 text-white">{p.title}</option>
+                ))}
+              </select>
+              <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-slate-500">
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+              </div>
+            </div>
+          </div>
+
+          {/* Action Button */}
+          <button
+            onClick={goCompare}
+            disabled={!a || !b || a === b}
+            className={cn(
+              "w-full md:w-auto px-10 py-4 font-black uppercase tracking-widest rounded-2xl transition-all duration-300 shadow-2xl",
+              (!a || !b || a === b)
+                ? "bg-slate-800 text-slate-600 cursor-not-allowed border border-white/5"
+                : "bg-gradient-to-r from-blue-600 to-violet-600 text-white hover:scale-105 hover:shadow-blue-500/50 active:scale-95 animate-shimmer"
+            )}
+          >
+            Battle
+          </button>
+        </div>
       </div>
-    </div>
+    </motion.div>
   )
 }

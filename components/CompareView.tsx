@@ -3,11 +3,10 @@ import CompareHeader from './CompareHeader'
 import SpecSection from './SpecSection'
 import RatingRadar from './RatingRadar'
 import { calculateScores } from '../lib/scoring'
+import { motion } from 'framer-motion'
 
 type Price = { source: string; price: number; url?: string }
 
-// Reuse types from mockData (simplified here for local prop usage)
-// In a real app, import shared types.
 type Product = {
   id: string
   slug: string
@@ -15,9 +14,7 @@ type Product = {
   description?: string
   thumbnail?: string | null
   currentPrices: Price[]
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   priceHistory: { recordedAt: string; price: number }[]
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   specs?: any
 }
 
@@ -26,9 +23,7 @@ export default function CompareView({ a, b }: { a: Product; b: Product }) {
   const pricesB = b.currentPrices || []
   const bestPriceA = pricesA.length > 0 ? Math.min(...pricesA.map((x) => x.price)) : 0
   const bestPriceB = pricesB.length > 0 ? Math.min(...pricesB.map((x) => x.price)) : 0
-  const priceDiff = bestPriceA - bestPriceB
 
-  // Safe fallback if specs are missing (e.g. old data)
   const sA = a.specs || {}
   const sB = b.specs || {}
 
@@ -36,88 +31,146 @@ export default function CompareView({ a, b }: { a: Product; b: Product }) {
   const scoresB = calculateScores(sB)
 
   return (
-    <div className="pb-20">
+    <div className="pb-20 space-y-12">
       <CompareHeader a={a} b={b} />
 
-      {/* Pricing Card (The most important part!) */}
-      <div className="grid grid-cols-2 gap-4 mb-4 animate-fade-in-up animate-delay-200">
-        <div className={`p-6 rounded-3xl border transition-all relative overflow-hidden group ${bestPriceA > 0 && bestPriceA < bestPriceB ? 'bg-green-50/90 border-green-200 ring-4 ring-green-100/50 shadow-xl' : 'glass hover:bg-white/80'}`}>
-          <div className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-1">Best Price</div>
-          <div className={`text-2xl md:text-3xl font-black ${bestPriceA > 0 && bestPriceA < bestPriceB ? 'text-green-700' : 'text-slate-900'}`}>
-            {bestPriceA > 0 ? `₹${bestPriceA.toLocaleString()}` : 'N/A'}
-          </div>
-          {pricesA[0]?.url ? (
-            <a href={pricesA[0].url} target="_blank" className="mt-4 block text-center w-full py-2.5 rounded-xl bg-slate-900 text-white text-sm font-bold hover:bg-slate-800 hover:scale-[1.02] transition-all shadow-lg shadow-slate-900/20">
-              Buy Now
-            </a>
-          ) : (
-            <div className="mt-4 py-2.5 text-center text-sm text-slate-400 font-medium">Out of stock</div>
-          )}
-        </div>
+      {/* Pricing Battle Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {[
+          { p: a, price: bestPriceA, other: bestPriceB, theme: 'blue' },
+          { p: b, price: bestPriceB, other: bestPriceA, theme: 'violet' }
+        ].map((item, i) => (
+          <motion.div
+            key={i}
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.2 + i * 0.1 }}
+            className={`relative p-8 rounded-3xl border transition-all duration-500 overflow-hidden group ${item.price > 0 && item.price < item.other
+                ? `bg-${item.theme}-500/10 border-${item.theme}-500/50 shadow-[0_0_30px_rgba(59,130,246,0.2)]`
+                : 'bg-white/5 border-white/10 hover:bg-white/10'
+              }`}
+          >
+            {/* Winner Badge */}
+            {item.price > 0 && item.price < item.other && (
+              <div className={`absolute top-4 right-4 px-3 py-1 rounded-full bg-${item.theme}-500 text-white text-[10px] font-black uppercase tracking-widest animate-pulse`}>
+                Best Deal
+              </div>
+            )}
 
-        <div className={`p-6 rounded-3xl border transition-all relative overflow-hidden group ${bestPriceB > 0 && bestPriceB < bestPriceA ? 'bg-green-50/90 border-green-200 ring-4 ring-green-100/50 shadow-xl' : 'glass hover:bg-white/80'}`}>
-          <div className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-1">Best Price</div>
-          <div className={`text-2xl md:text-3xl font-black ${bestPriceB > 0 && bestPriceB < bestPriceA ? 'text-green-700' : 'text-slate-900'}`}>
-            {bestPriceB > 0 ? `₹${bestPriceB.toLocaleString()}` : 'N/A'}
-          </div>
-          {pricesB[0]?.url ? (
-            <a href={pricesB[0].url} target="_blank" className="mt-4 block text-center w-full py-2.5 rounded-xl bg-slate-900 text-white text-sm font-bold hover:bg-slate-800 hover:scale-[1.02] transition-all shadow-lg shadow-slate-900/20">
-              Buy Now
-            </a>
-          ) : (
-            <div className="mt-4 py-2.5 text-center text-sm text-slate-400 font-medium">Out of stock</div>
-          )}
-        </div>
+            <div className="text-xs font-black uppercase tracking-[0.2em] text-slate-500 mb-2">Current Best Price</div>
+            <div className={`text-4xl md:text-5xl font-black tracking-tighter ${item.price > 0 && item.price < item.other
+                ? `text-${item.theme}-400`
+                : 'text-white'
+              }`}>
+              {item.price > 0 ? `₹${item.price.toLocaleString()}` : 'N/A'}
+            </div>
+
+            <div className="mt-8 space-y-4">
+              {item.p.currentPrices[0]?.url ? (
+                <a
+                  href={item.p.currentPrices[0].url}
+                  target="_blank"
+                  className={`block w-full py-4 rounded-2xl text-center font-black uppercase tracking-widest transition-all duration-300 ${item.price > 0 && item.price < item.other
+                      ? `bg-${item.theme}-600 text-white hover:bg-${item.theme}-500 hover:shadow-[0_0_20px_rgba(59,130,246,0.4)]`
+                      : 'bg-white/10 text-white hover:bg-white/20'
+                    }`}
+                >
+                  Grab Deal
+                </a>
+              ) : (
+                <div className="py-4 text-center text-slate-500 font-bold uppercase tracking-widest text-xs bg-white/5 rounded-2xl">
+                  Currently Unavailable
+                </div>
+              )}
+            </div>
+
+            {/* Background Glow */}
+            <div className={`absolute -bottom-10 -right-10 w-40 h-40 rounded-full blur-[80px] opacity-20 bg-${item.theme}-500 group-hover:opacity-40 transition-opacity`} />
+          </motion.div>
+        ))}
       </div>
 
-      {/* 🚀 NEW: The Beastly Radar Analysis */}
-      <div className="mb-8 overflow-hidden rounded-3xl bg-slate-900 text-white shadow-2xl ring-1 ring-white/10 animate-fade-in-up animate-delay-300">
-        <div className="p-6 md:p-8 grid md:grid-cols-2 items-center gap-8">
-          <div>
-            <h3 className="text-2xl font-bold font-heading mb-2 bg-gradient-to-r from-blue-400 to-violet-400 bg-clip-text text-transparent">Lifeline DNA Analysis</h3>
-            <p className="text-slate-400 text-sm mb-6">
-              Our AI algorithm normalized specs to generate this comparison.
-              <span className="text-blue-400 font-bold ml-1">{a.title} is Blue</span>,
-              <span className="text-violet-400 font-bold ml-1">{b.title} is Purple</span>.
-            </p>
+      {/* AI Analysis Section */}
+      <motion.div
+        initial={{ opacity: 0, y: 40 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        className="relative overflow-hidden rounded-[40px] bg-slate-900 border border-white/10 shadow-2xl"
+      >
+        <div className="absolute inset-0 bg-gradient-to-br from-blue-600/5 via-transparent to-violet-600/5" />
+
+        <div className="relative p-8 md:p-12 grid lg:grid-cols-2 items-center gap-12">
+          <div className="space-y-8">
+            <div>
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 mb-4">
+                <span className="w-2 h-2 rounded-full bg-blue-500 animate-ping" />
+                <span className="text-[10px] font-black text-blue-400 uppercase tracking-widest">AI Comparison Engine</span>
+              </div>
+              <h3 className="text-4xl font-black font-heading text-white leading-tight uppercase tracking-tighter">
+                The <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-violet-500">Lifeline DNA</span> Analysis
+              </h3>
+            </div>
 
             <div className="space-y-4">
-              {/* Quick stats */}
-              <div className="flex justify-between items-center p-3 rounded-lg bg-white/5 border border-white/10">
-                <span className="text-sm font-medium text-slate-300">Overall Score</span>
-                <div className="flex gap-4 font-bold">
-                  <span className="text-blue-400">{scoresA.overall}/10</span>
-                  <span className="text-slate-600">vs</span>
-                  <span className="text-violet-400">{scoresB.overall}/10</span>
+              <div className="grid grid-cols-2 gap-4">
+                <div className="p-4 rounded-2xl bg-white/5 border border-white/10 group hover:border-blue-500/30 transition-colors">
+                  <div className="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-1">{a.title}</div>
+                  <div className="text-3xl font-black text-blue-400">{scoresA.overall}<span className="text-sm text-slate-600">/10</span></div>
+                </div>
+                <div className="p-4 rounded-2xl bg-white/5 border border-white/10 group hover:border-violet-500/30 transition-colors text-right">
+                  <div className="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-1">{b.title}</div>
+                  <div className="text-3xl font-black text-violet-400">{scoresB.overall}<span className="text-sm text-slate-600">/10</span></div>
                 </div>
               </div>
 
-              <div className="p-4 bg-blue-500/10 border border-blue-500/20 rounded-xl text-xs leading-relaxed text-blue-200">
-                <strong>AI Verdict:</strong> {
-                  scoresA.overall > scoresB.overall
-                    ? `${a.title} takes the lead with superior ${scoresA.performance > scoresB.performance ? 'raw performance' : 'features'}, making it the better choice for power users.`
-                    : `${b.title} edges out the competition with a more balanced profile, offering better value for features like ${scoresB.display > scoresA.display ? 'display quality' : 'battery life'}.`
-                }
+              <div className="p-6 bg-gradient-to-br from-blue-500/10 to-violet-500/10 border border-white/10 rounded-2xl backdrop-blur-md">
+                <div className="flex gap-4 items-start">
+                  <div className="text-3xl">🤖</div>
+                  <div>
+                    <h4 className="text-xs font-black text-white uppercase tracking-widest mb-2">AI Verdict</h4>
+                    <p className="text-sm text-slate-300 leading-relaxed font-medium">
+                      {scoresA.overall > scoresB.overall
+                        ? `${a.title} dominates this battle with superior ${scoresA.performance > scoresB.performance ? 'raw engine performance' : 'feature set'}. It's the definitive choice for power seekers.`
+                        : `${b.title} provides a more surgical balance, outperforming in key areas like ${scoresB.display > scoresA.display ? 'visual fidelity' : 'endurance'}. The smarter choice for most users.`
+                      }
+                    </p>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
 
-          <div className="flex justify-center py-4 bg-slate-900/50 rounded-2xl">
+          <div className="flex justify-center p-8 bg-white/5 rounded-[32px] border border-white/5">
             <RatingRadar scoresA={scoresA} scoresB={scoresB} />
           </div>
         </div>
-      </div>
+      </motion.div>
 
-      {/* Spec Sections */}
-      <div className="space-y-6 animate-fade-in-up animate-delay-300">
-        <SpecSection title="Display" iconKey="display" dataA={sA.display} dataB={sB.display} />
-        <SpecSection title="Performance" iconKey="processor" dataA={sA.processor} dataB={sB.processor} />
-        <SpecSection title="Cameras" iconKey="camera" dataA={sA.camera} dataB={sB.camera} />
-        <SpecSection title="Memory & Storage" iconKey="memory" dataA={sA.memory} dataB={sB.memory} />
-        <SpecSection title="Battery & Charging" iconKey="battery" dataA={sA.battery} dataB={sB.battery} />
-        <SpecSection title="Design & Build" iconKey="build" dataA={sA.build} dataB={sB.build} />
-        <SpecSection title="Connectivity" iconKey="connectivity" dataA={sA.connectivity} dataB={sB.connectivity} />
-        <SpecSection title="Software" iconKey="software" dataA={sA.software} dataB={sB.software} />
+      {/* Comparisons Grid */}
+      <div className="space-y-8">
+        {[
+          { title: "Display", key: "display" },
+          { title: "Performance", key: "processor" },
+          { title: "Cameras", key: "camera" },
+          { title: "Endurance", key: "battery" },
+          { title: "Build", key: "build" },
+          { title: "Logic", key: "software" }
+        ].map((section, idx) => (
+          <motion.div
+            key={section.key}
+            initial={{ opacity: 0, x: -20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: idx * 0.1 }}
+          >
+            <SpecSection
+              title={section.title}
+              iconKey={section.key as any}
+              dataA={sA[section.key]}
+              dataB={sB[section.key]}
+            />
+          </motion.div>
+        ))}
       </div>
     </div>
   )

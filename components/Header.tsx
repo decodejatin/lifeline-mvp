@@ -1,14 +1,22 @@
 "use client"
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+
+if (typeof window !== 'undefined') {
+    gsap.registerPlugin(ScrollTrigger)
+}
 
 export default function Header() {
     const [isScrolled, setIsScrolled] = useState(false)
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
     const pathname = usePathname()
+    const headerRef = useRef<HTMLElement>(null)
+    const logoRef = useRef<HTMLDivElement>(null)
 
-    // Handle scroll effect
+    // Enhanced scroll effect with GSAP
     useEffect(() => {
         const handleScroll = () => {
             setIsScrolled(window.scrollY > 20)
@@ -17,6 +25,55 @@ export default function Header() {
         return () => window.removeEventListener('scroll', handleScroll)
     }, [])
 
+    // GSAP scroll animation for header
+    useEffect(() => {
+        if (!headerRef.current) return
+
+        const ctx = gsap.context(() => {
+            ScrollTrigger.create({
+                start: 'top top',
+                end: 'bottom top',
+                onUpdate: (self) => {
+                    const progress = self.progress
+                    if (headerRef.current) {
+                        // Shrink header on scroll
+                        gsap.to(headerRef.current, {
+                            paddingTop: progress > 0.1 ? '0.75rem' : '1.25rem',
+                            paddingBottom: progress > 0.1 ? '0.75rem' : '1.25rem',
+                            duration: 0.3,
+                        })
+                    }
+                },
+            })
+        }, headerRef)
+
+        return () => ctx.revert()
+    }, [])
+
+    // Magnetic effect for logo
+    const handleLogoMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+        if (!logoRef.current) return
+        const rect = logoRef.current.getBoundingClientRect()
+        const x = e.clientX - rect.left - rect.width / 2
+        const y = e.clientY - rect.top - rect.height / 2
+
+        gsap.to(logoRef.current, {
+            x: x * 0.2,
+            y: y * 0.2,
+            duration: 0.3,
+            ease: 'power2.out',
+        })
+    }
+
+    const handleLogoMouseLeave = () => {
+        gsap.to(logoRef.current, {
+            x: 0,
+            y: 0,
+            duration: 0.5,
+            ease: 'elastic.out(1, 0.5)',
+        })
+    }
+
     const navLinks = [
         { name: 'Products', href: '/products' },
         { name: 'Admin', href: '/admin' },
@@ -24,19 +81,26 @@ export default function Header() {
 
     return (
         <header
+            ref={headerRef}
             className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ease-in-out ${isScrolled
-                ? 'bg-white/80 backdrop-blur-md shadow-sm border-b border-white/20 py-3'
-                : 'bg-transparent py-5'
+                    ? 'bg-slate-900/80 backdrop-blur-xl shadow-lg border-b border-white/10'
+                    : 'bg-slate-900/50 backdrop-blur-sm border-b border-white/5'
                 }`}
         >
             <div className="max-w-6xl mx-auto px-4 flex items-center justify-between">
-                {/* Logo */}
+                {/* Logo with magnetic effect */}
                 <Link href="/" className="flex items-center gap-2 group">
-                    <div className="w-8 h-8 bg-gradient-to-tr from-blue-600 to-violet-600 rounded-lg flex items-center justify-center text-white font-bold text-lg shadow-lg group-hover:scale-110 transition-transform duration-300">
-                        L
+                    <div
+                        ref={logoRef}
+                        onMouseMove={handleLogoMouseMove}
+                        onMouseLeave={handleLogoMouseLeave}
+                        className="w-10 h-10 bg-gradient-to-tr from-blue-600 via-violet-600 to-purple-600 rounded-xl flex items-center justify-center text-white font-bold text-xl shadow-lg group-hover:shadow-xl transition-shadow duration-300 relative overflow-hidden"
+                    >
+                        {/* Shimmer effect */}
+                        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-shimmer" />
+                        <span className="relative z-10">L</span>
                     </div>
-                    <span className={`text-xl font-bold font-heading tracking-tight transition-colors duration-300 ${isScrolled || mobileMenuOpen ? 'text-slate-900' : 'text-slate-900/90' // Since hero is light, text is dark
-                        }`}>
+                    <span className="text-xl font-bold font-heading tracking-tight bg-gradient-to-r from-white to-blue-200 bg-clip-text text-transparent">
                         Lifeline
                     </span>
                 </Link>
@@ -47,55 +111,73 @@ export default function Header() {
                         <Link
                             key={link.href}
                             href={link.href}
-                            className={`text-sm font-medium transition-colors duration-300 relative group ${pathname === link.href ? 'text-blue-600' : 'text-slate-600 hover:text-slate-900'
+                            className={`text-sm font-medium transition-all duration-300 relative group ${pathname === link.href
+                                    ? 'text-blue-400'
+                                    : 'text-slate-300 hover:text-white hover:-translate-y-0.5'
                                 }`}
                         >
                             {link.name}
-                            <span className={`absolute -bottom-1 left-0 w-full h-0.5 bg-blue-600 transform origin-left transition-transform duration-300 ${pathname === link.href ? 'scale-x-100' : 'scale-x-0 group-hover:scale-x-100'
-                                }`}></span>
+                            <span
+                                className={`absolute -bottom-1 left-0 w-full h-0.5 bg-gradient-to-r from-blue-600 to-violet-600 transform origin-left transition-transform duration-300 ${pathname === link.href ? 'scale-x-100' : 'scale-x-0 group-hover:scale-x-100'
+                                    }`}
+                            />
                         </Link>
                     ))}
                     <Link
                         href="/compare"
-                        className="px-5 py-2.5 bg-slate-900 hover:bg-slate-800 text-white text-sm font-semibold rounded-full transition-all duration-300 shadow-lg hover:shadow-slate-900/20 hover:-translate-y-0.5"
+                        className="group relative px-6 py-2.5 bg-gradient-to-r from-blue-600 to-violet-600 text-white text-sm font-semibold rounded-full transition-all duration-300 shadow-lg hover:shadow-xl hover:shadow-blue-500/50 hover:-translate-y-0.5 overflow-hidden"
                     >
-                        Start Comparison
+                        {/* Shimmer on hover */}
+                        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 animate-shimmer" />
+                        <span className="relative z-10">Start Comparison</span>
                     </Link>
                 </nav>
 
                 {/* Mobile Menu Button */}
                 <button
-                    className="md:hidden p-2 text-slate-600 hover:text-slate-900"
+                    className="md:hidden p-2 text-slate-300 hover:text-white transition-colors"
                     onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                    aria-label="Toggle menu"
                 >
                     {mobileMenuOpen ? (
-                        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
+                        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                        </svg>
                     ) : (
-                        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16m-7 6h7" /></svg>
+                        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16m-7 6h7" />
+                        </svg>
                     )}
                 </button>
             </div>
 
-            {/* Mobile Menu Overlay */}
-            <div className={`md:hidden absolute top-full left-0 right-0 bg-white border-b border-slate-100 shadow-xl transition-all duration-300 overflow-hidden ${mobileMenuOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
-                }`}>
+            {/* Mobile Menu Overlay with smooth animation */}
+            <div
+                className={`md:hidden absolute top-full left-0 right-0 bg-slate-900/95 backdrop-blur-xl border-b border-white/10 shadow-xl transition-all duration-300 overflow-hidden ${mobileMenuOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
+                    }`}
+            >
                 <nav className="flex flex-col p-4 space-y-4">
-                    {navLinks.map((link) => (
+                    {navLinks.map((link, index) => (
                         <Link
                             key={link.href}
                             href={link.href}
                             onClick={() => setMobileMenuOpen(false)}
-                            className={`text-base font-medium p-2 rounded-lg transition-colors ${pathname === link.href ? 'bg-blue-50 text-blue-600' : 'text-slate-600 hover:bg-slate-50'
+                            className={`text-base font-medium p-3 rounded-xl transition-all duration-300 ${pathname === link.href
+                                    ? 'bg-gradient-to-r from-blue-500/20 to-violet-500/20 text-blue-400 shadow-sm border border-blue-500/30'
+                                    : 'text-slate-300 hover:bg-white/5 hover:text-white'
                                 }`}
+                            style={{
+                                animationDelay: `${index * 50}ms`,
+                            }}
                         >
                             {link.name}
                         </Link>
                     ))}
-                    <div className="pt-2 border-t border-slate-100">
+                    <div className="pt-2 border-t border-white/10">
                         <Link
                             href="/compare"
                             onClick={() => setMobileMenuOpen(false)}
-                            className="block w-full py-3 text-center bg-blue-600 text-white font-bold rounded-xl shadow-md"
+                            className="block w-full py-3 text-center bg-gradient-to-r from-blue-600 to-violet-600 text-white font-bold rounded-xl shadow-md hover:shadow-lg transition-all duration-300"
                         >
                             Start Comparison
                         </Link>

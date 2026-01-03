@@ -1,8 +1,10 @@
-import React from 'react'
+import React, { Suspense } from 'react'
 import { PRODUCTS } from '../../lib/mockData'
-import ProductCard from '../../components/ProductCard'
+import FlipCard from '../../components/ui/flip-card'
 import { Metadata } from 'next'
 import SortSelector from '../../components/SortSelector'
+import GradientOrb from '../../components/ui/gradient-orb'
+import TextReveal from '../../components/animations/TextReveal'
 
 type Props = {
   searchParams?: {
@@ -22,75 +24,139 @@ export default async function ProductsPage({ searchParams }: Props) {
   const { q = '', maxPrice = '', sort = 'price-asc' } = searchParams || {}
 
   // Filter products
-  let filtered = PRODUCTS
+  let filtered = [...PRODUCTS]
 
   // Search filter (by title)
   if (q) {
-    filtered = filtered.filter((p) => p.title.toLowerCase().includes(q.toLowerCase()) || p.description.toLowerCase().includes(q.toLowerCase()))
+    filtered = filtered.filter((p) =>
+      p.title.toLowerCase().includes(q.toLowerCase()) ||
+      p.description.toLowerCase().includes(q.toLowerCase())
+    )
   }
 
   // Budget filter (by minimum price)
   if (maxPrice) {
     const budget = parseInt(maxPrice, 10)
-    filtered = filtered.filter((p) => Math.min(...p.currentPrices.map((x) => x.price)) <= budget)
+    filtered = filtered.filter((p) =>
+      Math.min(...p.currentPrices.map((x) => x.price)) <= budget
+    )
   }
 
   // Sort
   if (sort === 'price-asc') {
-    filtered = filtered.sort((a, b) => Math.min(...a.currentPrices.map((x) => x.price)) - Math.min(...b.currentPrices.map((x) => x.price)))
+    filtered = filtered.sort((a, b) =>
+      Math.min(...a.currentPrices.map((x) => x.price)) - Math.min(...b.currentPrices.map((x) => x.price))
+    )
   } else if (sort === 'price-desc') {
-    filtered = filtered.sort((a, b) => Math.min(...b.currentPrices.map((x) => x.price)) - Math.min(...a.currentPrices.map((x) => x.price)))
+    filtered = filtered.sort((a, b) =>
+      Math.min(...b.currentPrices.map((x) => x.price)) - Math.min(...a.currentPrices.map((x) => x.price))
+    )
   } else if (sort === 'name') {
     filtered = filtered.sort((a, b) => a.title.localeCompare(b.title))
   }
 
   return (
-    <div className="max-w-6xl mx-auto px-4 py-8">
-      <section>
-        <h1 className="text-2xl font-bold mb-4">Browse Mobiles</h1>
-        <p className="text-slate-600 mb-6">Filter and compare mobile phones across all stores.</p>
+    <div className="relative min-h-screen">
+      {/* Background elements */}
+      <div className="fixed inset-0 pointer-events-none -z-10">
+        <GradientOrb color1="rgba(59, 130, 246, 0.2)" color2="rgba(147, 51, 234, 0.1)" size={600} top="-10%" left="-10%" />
+        <GradientOrb color1="rgba(236, 72, 153, 0.1)" color2="rgba(59, 130, 246, 0.1)" size={500} bottom="10%" right="-10%" />
+      </div>
 
-        <div className="mb-6 p-4 bg-white rounded border">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
-            <div>
-              <label className="block text-sm font-semibold mb-1">Search</label>
-              <form method="get" className="flex gap-2">
-                <input name="q" defaultValue={q} placeholder="Mobile name..." className="flex-1 border rounded p-2 text-sm" />
-                <button type="submit" className="px-3 py-2 bg-slate-900 text-white rounded text-sm">Search</button>
-              </form>
-            </div>
-            <div>
-              <label className="block text-sm font-semibold mb-1">Max Budget (₹)</label>
-              <form method="get" className="flex gap-2">
-                <input name="maxPrice" defaultValue={maxPrice} inputMode="numeric" placeholder="50000" className="flex-1 border rounded p-2 text-sm" />
-                <button type="submit" className="px-3 py-2 bg-amber-500 text-white rounded text-sm">Filter</button>
-              </form>
-            </div>
-            <div>
-              <label className="block text-sm font-semibold mb-1">Sort</label>
-              <SortSelector defaultValue={sort} />
-            </div>
-            <div className="flex items-end">
-              <a href="/products" className="px-3 py-2 bg-slate-200 text-slate-900 rounded text-sm">Clear Filters</a>
+      <div className="max-w-7xl mx-auto px-4 py-16 relative z-10">
+        <section className="space-y-12">
+          <div className="text-center max-w-3xl mx-auto">
+            <TextReveal as="h1" className="text-5xl md:text-6xl font-bold mb-6 text-white">
+              Explore Mobiles
+            </TextReveal>
+            <p className="text-slate-400 text-lg">
+              Find and compare the latest devices across top retailers. Use our AI-powered filters to narrow down your search.
+            </p>
+          </div>
+
+          {/* Premium Filter Bar */}
+          <div className="p-1 rounded-3xl bg-gradient-to-r from-blue-500/20 via-violet-500/20 to-pink-500/20 backdrop-blur-xl border border-white/10">
+            <div className="p-6 md:p-8 rounded-[22px] bg-slate-900/80">
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+                {/* Search */}
+                <div className="space-y-2">
+                  <label className="text-xs font-bold text-slate-500 uppercase tracking-widest ml-1">Search Device</label>
+                  <form method="get" className="relative group">
+                    <input
+                      name="q"
+                      defaultValue={q}
+                      placeholder="e.g. iPhone 15 Pro..."
+                      className="w-full bg-slate-800/50 border border-white/5 rounded-2xl px-4 py-3 text-white placeholder:text-slate-600 focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all"
+                    />
+                    <button type="submit" className="absolute right-2 top-1.5 p-2 bg-blue-600 hover:bg-blue-500 rounded-xl transition-colors">
+                      <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                      </svg>
+                    </button>
+                  </form>
+                </div>
+
+                {/* Budget */}
+                <div className="space-y-2">
+                  <label className="text-xs font-bold text-slate-500 uppercase tracking-widest ml-1">Max Budget</label>
+                  <form method="get" className="relative group">
+                    <span className="absolute left-4 top-3.5 text-slate-500 font-semibold">₹</span>
+                    <input
+                      name="maxPrice"
+                      defaultValue={maxPrice}
+                      inputMode="numeric"
+                      placeholder="e.g. 80000"
+                      className="w-full bg-slate-800/50 border border-white/5 rounded-2xl pl-8 pr-4 py-3 text-white placeholder:text-slate-600 focus:outline-none focus:ring-2 focus:ring-violet-500/50 transition-all"
+                    />
+                  </form>
+                </div>
+
+                {/* Sort */}
+                <div className="space-y-2">
+                  <label className="text-xs font-bold text-slate-500 uppercase tracking-widest ml-1">Sort By</label>
+                  <SortSelector defaultValue={sort} />
+                </div>
+
+                {/* Clear */}
+                <div className="flex items-end">
+                  <a
+                    href="/products"
+                    className="w-full py-3.5 text-center bg-white/5 hover:bg-white/10 text-white rounded-2xl font-semibold border border-white/10 transition-all hover:border-white/20"
+                  >
+                    Reset Filters
+                  </a>
+                </div>
+              </div>
             </div>
           </div>
-        </div>
 
-        {filtered.length === 0 ? (
-          <div className="p-6 text-center bg-slate-50 rounded">
-            <p className="text-slate-600">No products match your criteria. Try adjusting your filters.</p>
-          </div>
-        ) : (
-          <>
-            <p className="text-sm text-slate-600 mb-4">Showing {filtered.length} of {PRODUCTS.length} products</p>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {filtered.map((p) => (
-                <ProductCard key={p.id} product={p} />
-              ))}
+          {/* Products Grid */}
+          <div className="space-y-6">
+            <div className="flex justify-between items-center px-2">
+              <p className="text-slate-400 font-medium">
+                Showing <span className="text-white font-bold">{filtered.length}</span> devices
+              </p>
+              {filtered.length > 0 && (
+                <div className="h-px flex-1 mx-8 bg-gradient-to-r from-transparent via-white/10 to-transparent" />
+              )}
             </div>
-          </>
-        )}
-      </section>
+
+            {filtered.length === 0 ? (
+              <div className="py-20 text-center rounded-3xl bg-white/5 border border-dashed border-white/10">
+                <div className="text-6xl mb-4">🔍</div>
+                <h3 className="text-2xl font-bold text-white mb-2">No matching devices found</h3>
+                <p className="text-slate-400">Try adjusting your filters or search terms.</p>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {filtered.map((p, index) => (
+                  <FlipCard key={p.id} product={p as any} index={index} />
+                ))}
+              </div>
+            )}
+          </div>
+        </section>
+      </div>
     </div>
   )
 }

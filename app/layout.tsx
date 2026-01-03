@@ -52,14 +52,18 @@ export const metadata = {
   }
 }
 
+import SmoothScrollProvider from '@/components/providers/SmoothScrollProvider'
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={`${inter.variable} ${outfit.variable}`}>
       <head />
-      <body className="min-h-screen bg-slate-50 font-body flex flex-col">
-        <Header />
-        <main className="flex-grow w-full pt-24">{children}</main>
-        <Footer />
+      <body className="min-h-screen bg-slate-950 font-body flex flex-col">
+        <SmoothScrollProvider>
+          <Header />
+          <main className="flex-grow w-full pt-24">{children}</main>
+          <Footer />
+        </SmoothScrollProvider>
       </body>
     </html>
   )
