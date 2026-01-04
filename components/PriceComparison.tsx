@@ -62,7 +62,7 @@ export default function PriceComparison({ prices }: { prices: Price[] }) {
                       href={p.url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-blue-600/10 hover:bg-blue-600 text-blue-400 hover:text-white transition-all duration-300 text-xs font-black uppercase tracking-widest group-hover:shadow-[0_0_15px_rgba(59,130,246,0.3)]"
+                      className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white/5 hover:bg-orange-600 text-orange-400 hover:text-white transition-all duration-300 text-xs font-black uppercase tracking-widest group-hover:shadow-[0_0_15px_rgba(249,115,22,0.3)]"
                     >
                       Visit
                       <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">

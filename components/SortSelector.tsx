@@ -14,11 +14,11 @@ export default function SortSelector({ defaultValue }: { defaultValue: string })
       <select
         defaultValue={defaultValue}
         onChange={handleSort}
-        className="w-full bg-slate-800/50 border border-white/5 rounded-2xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-pink-500/50 transition-all appearance-none cursor-pointer"
+        className="w-full bg-white/5 border border-white/10 rounded-2xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-orange-500/50 transition-all appearance-none cursor-pointer font-bold"
       >
-        <option value="price-asc" className="bg-slate-900">Price: Low to High</option>
-        <option value="price-desc" className="bg-slate-900">Price: High to Low</option>
-        <option value="name" className="bg-slate-900">Name A-Z</option>
+        <option value="price-asc" className="bg-black">Price: Low to High</option>
+        <option value="price-desc" className="bg-black">Price: High to Low</option>
+        <option value="name" className="bg-black">Name A-Z</option>
       </select>
       <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-slate-500">
         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

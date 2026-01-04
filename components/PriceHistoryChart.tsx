@@ -45,7 +45,7 @@ export default function PriceHistoryChart({ history }: { history: Point[] }) {
   const areaData = `${pathData} L 100 100 L 0 100 Z`
 
   return (
-    <div className="relative p-6 bg-slate-900 border border-white/10 rounded-[32px] overflow-hidden group">
+    <div className="relative p-6 bg-black border border-white/10 rounded-[32px] overflow-hidden group">
       {/* Background Grid Lines */}
       <div className="absolute inset-0 grid grid-cols-5 grid-rows-4 opacity-[0.03] pointer-events-none">
         {[...Array(20)].map((_, i) => (
@@ -58,8 +58,8 @@ export default function PriceHistoryChart({ history }: { history: Point[] }) {
           {/* Gradient for area */}
           <defs>
             <linearGradient id="chartGradient" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="#3b82f6" stopOpacity="0.3" />
-              <stop offset="100%" stopColor="#3b82f6" stopOpacity="0" />
+              <stop offset="0%" stopColor="#f97316" stopOpacity="0.3" />
+              <stop offset="100%" stopColor="#f97316" stopOpacity="0" />
             </linearGradient>
             <filter id="glow">
               <feGaussianBlur stdDeviation="1.5" result="coloredBlur" />
@@ -86,7 +86,7 @@ export default function PriceHistoryChart({ history }: { history: Point[] }) {
             transition={{ duration: 1.5, ease: "easeInOut" }}
             d={pathData}
             fill="none"
-            stroke="#60a5fa"
+            stroke="#f97316"
             strokeWidth="1.5"
             strokeLinecap="round"
             strokeLinejoin="round"
@@ -115,7 +115,7 @@ export default function PriceHistoryChart({ history }: { history: Point[] }) {
             Max: <span className="text-red-400 font-bold ml-1">₹{max.toLocaleString()}</span>
           </div>
         </div>
-        <div className="text-[10px] font-black uppercase tracking-[0.2em] text-blue-500 bg-blue-500/10 px-2 py-0.5 rounded-full border border-blue-500/20">
+        <div className="text-[10px] font-black uppercase tracking-[0.2em] text-orange-500 bg-orange-500/10 px-2 py-0.5 rounded-full border border-orange-500/20">
           Volatility Analyzed
         </div>
       </div>
