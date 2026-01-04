@@ -14,6 +14,10 @@ export default function Footer() {
         'Xiaomi',
         'Realme',
         'Vivo',
+        'Motorola',
+        'Poco',
+        'Oppo',
+        '',
     ]
 
     return (

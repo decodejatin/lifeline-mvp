@@ -21,9 +21,9 @@ export default function CompareSelector({ products, selectedA, selectedB }: { pr
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="p-1 rounded-[32px] bg-gradient-to-r from-blue-500/20 via-violet-500/20 to-pink-500/20 backdrop-blur-xl border border-white/10"
+      className="p-1 rounded-[32px] bg-gradient-to-r from-orange-500/20 via-slate-500/20 to-orange-900/20 backdrop-blur-xl border border-white/10"
     >
-      <div className="bg-slate-900/90 p-6 md:p-8 rounded-[28px] shadow-2xl">
+      <div className="bg-black/90 p-6 md:p-8 rounded-[28px] shadow-2xl">
         <div className="flex flex-col md:flex-row items-center gap-6">
 
           {/* Product A Selector */}
@@ -31,13 +31,13 @@ export default function CompareSelector({ products, selectedA, selectedB }: { pr
             <label className="block text-xs font-bold uppercase tracking-[0.2em] text-slate-500 ml-1">Device One</label>
             <div className="relative group">
               <select
-                className="w-full p-4 bg-slate-800/50 border border-white/5 outline-none rounded-2xl font-bold text-white focus:ring-2 focus:ring-blue-500/50 appearance-none cursor-pointer group-hover:bg-slate-700/50 transition-all"
+                className="w-full p-4 bg-white/5 border border-white/5 outline-none rounded-2xl font-bold text-white focus:ring-2 focus:ring-orange-500/50 appearance-none cursor-pointer group-hover:bg-white/10 transition-all"
                 value={a || ''}
                 onChange={(e) => setA(e.target.value)}
               >
-                <option value="" className="bg-slate-900 text-slate-400">Choose first phone...</option>
+                <option value="" className="bg-black text-slate-400">Choose first phone...</option>
                 {products.map((p) => (
-                  <option key={p.id} value={p.slug} className="bg-slate-900 text-white">{p.title}</option>
+                  <option key={p.id} value={p.slug} className="bg-black text-white">{p.title}</option>
                 ))}
               </select>
               <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-slate-500">
@@ -50,8 +50,8 @@ export default function CompareSelector({ products, selectedA, selectedB }: { pr
 
           {/* VS Badge */}
           <div className="relative shrink-0 w-16 h-16 rounded-full flex items-center justify-center -my-4 md:my-0 z-10 group">
-            <div className="absolute inset-0 bg-gradient-to-tr from-blue-600 to-violet-600 rounded-full animate-pulse blur-md opacity-50 group-hover:opacity-100 transition-opacity" />
-            <div className="relative w-full h-full bg-slate-900 rounded-full border-2 border-white/10 flex items-center justify-center font-black italic text-xl text-white shadow-2xl">
+            <div className="absolute inset-0 bg-gradient-to-tr from-orange-600 to-orange-900 rounded-full animate-pulse blur-md opacity-50 group-hover:opacity-100 transition-opacity" />
+            <div className="relative w-full h-full bg-black rounded-full border-2 border-white/10 flex items-center justify-center font-black italic text-xl text-white shadow-2xl">
               VS
             </div>
           </div>
@@ -61,13 +61,13 @@ export default function CompareSelector({ products, selectedA, selectedB }: { pr
             <label className="block text-xs font-bold uppercase tracking-[0.2em] text-slate-500 ml-1">Device Two</label>
             <div className="relative group">
               <select
-                className="w-full p-4 bg-slate-800/50 border border-white/5 outline-none rounded-2xl font-bold text-white focus:ring-2 focus:ring-violet-500/50 appearance-none cursor-pointer group-hover:bg-slate-700/50 transition-all"
+                className="w-full p-4 bg-white/5 border border-white/5 outline-none rounded-2xl font-bold text-white focus:ring-2 focus:ring-slate-500/50 appearance-none cursor-pointer group-hover:bg-white/10 transition-all"
                 value={b || ''}
                 onChange={(e) => setB(e.target.value)}
               >
-                <option value="" className="bg-slate-900 text-slate-400">Choose second phone...</option>
+                <option value="" className="bg-black text-slate-400">Choose second phone...</option>
                 {products.map((p) => (
-                  <option key={p.id} value={p.slug} className="bg-slate-900 text-white">{p.title}</option>
+                  <option key={p.id} value={p.slug} className="bg-black text-white">{p.title}</option>
                 ))}
               </select>
               <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-slate-500">
@@ -85,8 +85,8 @@ export default function CompareSelector({ products, selectedA, selectedB }: { pr
             className={cn(
               "w-full md:w-auto px-10 py-4 font-black uppercase tracking-widest rounded-2xl transition-all duration-300 shadow-2xl",
               (!a || !b || a === b)
-                ? "bg-slate-800 text-slate-600 cursor-not-allowed border border-white/5"
-                : "bg-gradient-to-r from-blue-600 to-violet-600 text-white hover:scale-105 hover:shadow-blue-500/50 active:scale-95 animate-shimmer"
+                ? "bg-white/5 text-slate-700 cursor-not-allowed border border-white/5"
+                : "bg-white text-black hover:bg-orange-600 hover:text-white"
             )}
           >
             Battle

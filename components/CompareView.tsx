@@ -1,3 +1,4 @@
+"use client"
 import React from 'react'
 import CompareHeader from './CompareHeader'
 import SpecSection from './SpecSection'
