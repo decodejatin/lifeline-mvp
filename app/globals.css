@@ -40,53 +40,55 @@
 @layer base {
     :root {
         --background: hsl(0 0% 100%);
-        --foreground: hsl(222.2 84% 4.9%);
+        --foreground: hsl(0 0% 3.9%);
         --card: hsl(0 0% 100%);
-        --card-foreground: hsl(222.2 84% 4.9%);
+        --card-foreground: hsl(0 0% 3.9%);
         --popover: hsl(0 0% 100%);
-        --popover-foreground: hsl(222.2 84% 4.9%);
-        --primary: hsl(222.2 47.4% 11.2%);
-        --primary-foreground: hsl(210 40% 98%);
-        --secondary: hsl(210 40% 96.1%);
-        --secondary-foreground: hsl(222.2 47.4% 11.2%);
-        --muted: hsl(210 40% 96.1%);
-        --muted-foreground: hsl(215.4 16.3% 46.9%);
-        --accent: hsl(210 40% 96.1%);
-        --accent-foreground: hsl(222.2 47.4% 11.2%);
+        --popover-foreground: hsl(0 0% 3.9%);
+        --primary: hsl(24.6 95% 53.1%);
+        /* Classic Orange */
+        --primary-foreground: hsl(0 0% 98%);
+        --secondary: hsl(0 0% 96.1%);
+        --secondary-foreground: hsl(0 0% 9%);
+        --muted: hsl(0 0% 96.1%);
+        --muted-foreground: hsl(0 0% 45.1%);
+        --accent: hsl(0 0% 96.1%);
+        --accent-foreground: hsl(0 0% 9%);
         --destructive: hsl(0 84.2% 60.2%);
-        --destructive-foreground: hsl(210 40% 98%);
-        --border: hsl(214.3 31.8% 91.4%);
-        --input: hsl(214.3 31.8% 91.4%);
-        --ring: hsl(222.2 84% 4.9%);
+        --destructive-foreground: hsl(0 0% 98%);
+        --border: hsl(0 0% 89.8%);
+        --input: hsl(0 0% 89.8%);
+        --ring: hsl(24.6 95% 53.1%);
         --radius: 0.5rem;
     }
 
     .dark {
-        --background: hsl(222.2 84% 4.9%);
-        --foreground: hsl(210 40% 98%);
-        --card: hsl(222.2 84% 4.9%);
-        --card-foreground: hsl(210 40% 98%);
-        --popover: hsl(222.2 84% 4.9%);
-        --popover-foreground: hsl(210 40% 98%);
-        --primary: hsl(210 40% 98%);
-        --primary-foreground: hsl(222.2 47.4% 11.2%);
-        --secondary: hsl(217.2 32.6% 17.5%);
-        --secondary-foreground: hsl(210 40% 98%);
-        --muted: hsl(217.2 32.6% 17.5%);
-        --muted-foreground: hsl(215 20.2% 65.1%);
-        --accent: hsl(217.2 32.6% 17.5%);
-        --accent-foreground: hsl(210 40% 98%);
+        --background: hsl(0 0% 3.9%);
+        --foreground: hsl(0 0% 98%);
+        --card: hsl(0 0% 3.9%);
+        --card-foreground: hsl(0 0% 98%);
+        --popover: hsl(0 0% 3.9%);
+        --popover-foreground: hsl(0 0% 98%);
+        --primary: hsl(24.6 95% 53.1%);
+        /* Classic Orange */
+        --primary-foreground: hsl(0 0% 9%);
+        --secondary: hsl(0 0% 14.9%);
+        --secondary-foreground: hsl(0 0% 98%);
+        --muted: hsl(0 0% 14.9%);
+        --muted-foreground: hsl(0 0% 63.9%);
+        --accent: hsl(0 0% 14.9%);
+        --accent-foreground: hsl(0 0% 98%);
         --destructive: hsl(0 62.8% 30.6%);
-        --destructive-foreground: hsl(210 40% 98%);
-        --border: hsl(217.2 32.6% 17.5%);
-        --input: hsl(217.2 32.6% 17.5%);
-        --ring: hsl(212.7 26.8% 83.9%);
+        --destructive-foreground: hsl(0 0% 98%);
+        --border: hsl(0 0% 14.9%);
+        --input: hsl(0 0% 14.9%);
+        --ring: hsl(24.6 95% 53.1%);
     }
 }
 
 @layer base {
     body {
-        @apply bg-slate-950 text-slate-100 antialiased;
+        @apply bg-black text-slate-100 antialiased;
         font-family: var(--font-body);
     }
 }
@@ -97,7 +99,7 @@
     }
 
     .glass-dark {
-        @apply bg-slate-900/80 backdrop-blur-md border border-white/10;
+        @apply bg-black/80 backdrop-blur-md border border-white/10;
     }
 
     .shadow-soft {
@@ -105,15 +107,15 @@
     }
 
     .text-gradient {
-        @apply bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-violet-600;
+        @apply bg-clip-text text-transparent bg-gradient-to-r from-orange-500 to-orange-700;
     }
 
-    /* Premium gradient mesh background */
+    /* Premium gradient mesh background - Classic Orange/Black */
     .gradient-mesh {
         background:
-            radial-gradient(at 40% 20%, hsla(240, 100%, 70%, 0.3) 0px, transparent 50%),
-            radial-gradient(at 80% 0%, hsla(280, 100%, 70%, 0.2) 0px, transparent 50%),
-            radial-gradient(at 0% 50%, hsla(200, 100%, 70%, 0.2) 0px, transparent 50%);
+            radial-gradient(at 40% 20%, hsla(24, 100%, 50%, 0.1) 0px, transparent 50%),
+            radial-gradient(at 80% 0%, hsla(0, 0%, 10%, 0.2) 0px, transparent 50%),
+            radial-gradient(at 0% 50%, hsla(24, 100%, 50%, 0.05) 0px, transparent 50%);
     }
 
     /* Magnetic cursor area */
@@ -152,19 +154,19 @@
         animation: gradient 3s ease infinite;
     }
 
-    /* Neon glow effect */
+    /* Neon glow effect - Orange */
     .neon-glow {
         text-shadow:
-            0 0 10px rgba(59, 130, 246, 0.8),
-            0 0 20px rgba(59, 130, 246, 0.6),
-            0 0 30px rgba(59, 130, 246, 0.4);
+            0 0 10px rgba(249, 115, 22, 0.8),
+            0 0 20px rgba(249, 115, 22, 0.6),
+            0 0 30px rgba(249, 115, 22, 0.4);
     }
 
     .neon-border {
         box-shadow:
-            0 0 5px rgba(59, 130, 246, 0.5),
-            0 0 10px rgba(59, 130, 246, 0.3),
-            inset 0 0 5px rgba(59, 130, 246, 0.2);
+            0 0 5px rgba(249, 115, 22, 0.5),
+            0 0 10px rgba(249, 115, 22, 0.3),
+            inset 0 0 5px rgba(249, 115, 22, 0.2);
     }
 
     /* Fire Mode Animations */

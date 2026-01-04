@@ -79,8 +79,8 @@ export default function RatingRadar({ scoresA, scoresB }: Props) {
                     animate={{ pathLength: 1, opacity: 1 }}
                     transition={{ duration: 1, delay: 0.5 }}
                     d={pathA}
-                    fill="rgba(59, 130, 246, 0.15)"
-                    stroke="#3b82f6"
+                    fill="rgba(249, 115, 22, 0.15)"
+                    stroke="#f97316"
                     strokeWidth="2.5"
                     strokeLinejoin="round"
                 />
@@ -89,8 +89,8 @@ export default function RatingRadar({ scoresA, scoresB }: Props) {
                     animate={{ pathLength: 1, opacity: 1 }}
                     transition={{ duration: 1, delay: 0.7 }}
                     d={pathB}
-                    fill="rgba(168, 85, 247, 0.15)"
-                    stroke="#a855f7"
+                    fill="rgba(148, 163, 184, 0.15)"
+                    stroke="#94a3b8"
                     strokeWidth="2.5"
                     strokeLinejoin="round"
                 />
@@ -103,8 +103,8 @@ export default function RatingRadar({ scoresA, scoresB }: Props) {
                     const pB = getPoint(vB, i)
                     return (
                         <g key={i}>
-                            <circle cx={pA.x} cy={pA.y} r="3" fill="#3b82f6" />
-                            <circle cx={pB.x} cy={pB.y} r="3" fill="#a855f7" />
+                            <circle cx={pA.x} cy={pA.y} r="3" fill="#f97316" />
+                            <circle cx={pB.x} cy={pB.y} r="3" fill="#94a3b8" />
                         </g>
                     )
                 })}

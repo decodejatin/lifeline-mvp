@@ -83,8 +83,8 @@ export default function Header() {
         <header
             ref={headerRef}
             className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ease-in-out ${isScrolled
-                    ? 'bg-slate-900/80 backdrop-blur-xl shadow-lg border-b border-white/10'
-                    : 'bg-slate-900/50 backdrop-blur-sm border-b border-white/5'
+                ? 'bg-black/80 backdrop-blur-xl shadow-lg border-b border-white/10'
+                : 'bg-black/50 backdrop-blur-sm border-b border-white/5'
                 }`}
         >
             <div className="max-w-6xl mx-auto px-4 flex items-center justify-between">
@@ -94,13 +94,13 @@ export default function Header() {
                         ref={logoRef}
                         onMouseMove={handleLogoMouseMove}
                         onMouseLeave={handleLogoMouseLeave}
-                        className="w-10 h-10 bg-gradient-to-tr from-blue-600 via-violet-600 to-purple-600 rounded-xl flex items-center justify-center text-white font-bold text-xl shadow-lg group-hover:shadow-xl transition-shadow duration-300 relative overflow-hidden"
+                        className="w-10 h-10 bg-gradient-to-tr from-orange-600 via-orange-500 to-orange-400 rounded-xl flex items-center justify-center text-white font-bold text-xl shadow-lg group-hover:shadow-xl transition-shadow duration-300 relative overflow-hidden"
                     >
                         {/* Shimmer effect */}
                         <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-shimmer" />
                         <span className="relative z-10">L</span>
                     </div>
-                    <span className="text-xl font-bold font-heading tracking-tight bg-gradient-to-r from-white to-blue-200 bg-clip-text text-transparent">
+                    <span className="text-xl font-bold font-heading tracking-tight bg-gradient-to-r from-white to-orange-200 bg-clip-text text-transparent">
                         Lifeline
                     </span>
                 </Link>
@@ -112,20 +112,20 @@ export default function Header() {
                             key={link.href}
                             href={link.href}
                             className={`text-sm font-medium transition-all duration-300 relative group ${pathname === link.href
-                                    ? 'text-blue-400'
-                                    : 'text-slate-300 hover:text-white hover:-translate-y-0.5'
+                                ? 'text-orange-500'
+                                : 'text-slate-300 hover:text-white hover:-translate-y-0.5'
                                 }`}
                         >
                             {link.name}
                             <span
-                                className={`absolute -bottom-1 left-0 w-full h-0.5 bg-gradient-to-r from-blue-600 to-violet-600 transform origin-left transition-transform duration-300 ${pathname === link.href ? 'scale-x-100' : 'scale-x-0 group-hover:scale-x-100'
+                                className={`absolute -bottom-1 left-0 w-full h-0.5 bg-gradient-to-r from-orange-600 to-orange-400 transform origin-left transition-transform duration-300 ${pathname === link.href ? 'scale-x-100' : 'scale-x-0 group-hover:scale-x-100'
                                     }`}
                             />
                         </Link>
                     ))}
                     <Link
                         href="/compare"
-                        className="group relative px-6 py-2.5 bg-gradient-to-r from-blue-600 to-violet-600 text-white text-sm font-semibold rounded-full transition-all duration-300 shadow-lg hover:shadow-xl hover:shadow-blue-500/50 hover:-translate-y-0.5 overflow-hidden"
+                        className="group relative px-6 py-2.5 bg-gradient-to-r from-orange-600 to-orange-500 text-white text-sm font-semibold rounded-full transition-all duration-300 shadow-lg hover:shadow-xl hover:shadow-orange-500/50 hover:-translate-y-0.5 overflow-hidden"
                     >
                         {/* Shimmer on hover */}
                         <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 animate-shimmer" />
@@ -153,7 +153,7 @@ export default function Header() {
 
             {/* Mobile Menu Overlay with smooth animation */}
             <div
-                className={`md:hidden absolute top-full left-0 right-0 bg-slate-900/95 backdrop-blur-xl border-b border-white/10 shadow-xl transition-all duration-300 overflow-hidden ${mobileMenuOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
+                className={`md:hidden absolute top-full left-0 right-0 bg-black/95 backdrop-blur-xl border-b border-white/10 shadow-xl transition-all duration-300 overflow-hidden ${mobileMenuOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
                     }`}
             >
                 <nav className="flex flex-col p-4 space-y-4">
@@ -163,8 +163,8 @@ export default function Header() {
                             href={link.href}
                             onClick={() => setMobileMenuOpen(false)}
                             className={`text-base font-medium p-3 rounded-xl transition-all duration-300 ${pathname === link.href
-                                    ? 'bg-gradient-to-r from-blue-500/20 to-violet-500/20 text-blue-400 shadow-sm border border-blue-500/30'
-                                    : 'text-slate-300 hover:bg-white/5 hover:text-white'
+                                ? 'bg-gradient-to-r from-orange-500/20 to-orange-400/20 text-orange-500 shadow-sm border border-orange-500/30'
+                                : 'text-slate-300 hover:bg-white/5 hover:text-white'
                                 }`}
                             style={{
                                 animationDelay: `${index * 50}ms`,
@@ -177,7 +177,7 @@ export default function Header() {
                         <Link
                             href="/compare"
                             onClick={() => setMobileMenuOpen(false)}
-                            className="block w-full py-3 text-center bg-gradient-to-r from-blue-600 to-violet-600 text-white font-bold rounded-xl shadow-md hover:shadow-lg transition-all duration-300"
+                            className="block w-full py-3 text-center bg-gradient-to-r from-orange-600 to-orange-500 text-white font-bold rounded-xl shadow-md hover:shadow-lg transition-all duration-300"
                         >
                             Start Comparison
                         </Link>

@@ -17,19 +17,19 @@ export default function Footer() {
     ]
 
     return (
-        <footer className="relative bg-slate-900 text-slate-300 border-t border-slate-800 mt-auto overflow-hidden">
-            {/* Gradient mesh background */}
-            <div className="absolute inset-0 opacity-30">
-                <div className="absolute top-0 left-1/4 w-96 h-96 bg-blue-600/20 rounded-full blur-3xl" />
-                <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-violet-600/20 rounded-full blur-3xl" />
+        <footer className="relative bg-black text-slate-300 border-t border-white/10 mt-auto overflow-hidden">
+            {/* Gradient mesh background - Classic Orange */}
+            <div className="absolute inset-0 opacity-20">
+                <div className="absolute top-0 left-1/4 w-96 h-96 bg-orange-600/10 rounded-full blur-3xl" />
+                <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-orange-800/10 rounded-full blur-3xl" />
             </div>
 
             {/* Marquee Section */}
-            <div className="relative border-b border-slate-800 py-6 bg-slate-800/30">
+            <div className="relative border-b border-white/5 py-6 bg-white/[0.02]">
                 <Marquee gradient={false} speed={40} className="text-slate-500 text-sm font-medium">
                     {partners.map((partner, index) => (
                         <span key={index} className="mx-8 flex items-center gap-2">
-                            <span className="w-1.5 h-1.5 rounded-full bg-blue-500" />
+                            <span className="w-1.5 h-1.5 rounded-full bg-orange-500" />
                             {partner}
                         </span>
                     ))}
@@ -40,7 +40,7 @@ export default function Footer() {
                 {/* Brand Section */}
                 <div className="space-y-4">
                     <Link href="/" className="inline-block group">
-                        <span className="text-2xl font-bold bg-gradient-to-r from-white via-blue-100 to-violet-100 bg-clip-text text-transparent font-heading">
+                        <span className="text-2xl font-bold bg-gradient-to-r from-white via-orange-100 to-orange-200 bg-clip-text text-transparent font-heading">
                             Lifeline
                         </span>
                     </Link>
@@ -51,7 +51,7 @@ export default function Footer() {
                         {/* Social Icons with hover effects */}
                         <a
                             href="#"
-                            className="w-10 h-10 rounded-full bg-slate-800 hover:bg-gradient-to-r hover:from-blue-600 hover:to-violet-600 flex items-center justify-center transition-all duration-300 hover:scale-110 hover:shadow-lg"
+                            className="w-10 h-10 rounded-full bg-white/5 border border-white/10 hover:bg-gradient-to-r hover:from-orange-600 hover:to-orange-500 flex items-center justify-center transition-all duration-300 hover:scale-110 hover:shadow-lg hover:shadow-orange-500/20"
                         >
                             <span className="sr-only">Twitter</span>
                             <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -60,7 +60,7 @@ export default function Footer() {
                         </a>
                         <a
                             href="#"
-                            className="w-10 h-10 rounded-full bg-slate-800 hover:bg-gradient-to-r hover:from-blue-600 hover:to-violet-600 flex items-center justify-center transition-all duration-300 hover:scale-110 hover:shadow-lg"
+                            className="w-10 h-10 rounded-full bg-white/5 border border-white/10 hover:bg-gradient-to-r hover:from-orange-600 hover:to-orange-500 flex items-center justify-center transition-all duration-300 hover:scale-110 hover:shadow-lg hover:shadow-orange-500/20"
                         >
                             <span className="sr-only">GitHub</span>
                             <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -75,22 +75,22 @@ export default function Footer() {
                     <h3 className="text-white font-semibold mb-4 text-sm uppercase tracking-wider">Explore</h3>
                     <ul className="space-y-2 text-sm">
                         <li>
-                            <Link href="/products" className="hover:text-blue-400 transition-colors duration-200 hover:translate-x-1 inline-block">
+                            <Link href="/products" className="hover:text-orange-500 transition-colors duration-200 hover:translate-x-1 inline-block">
                                 All Phones
                             </Link>
                         </li>
                         <li>
-                            <Link href="/compare" className="hover:text-blue-400 transition-colors duration-200 hover:translate-x-1 inline-block">
+                            <Link href="/compare" className="hover:text-orange-500 transition-colors duration-200 hover:translate-x-1 inline-block">
                                 Compare Tool
                             </Link>
                         </li>
                         <li>
-                            <Link href="/best-5g-phones" className="hover:text-blue-400 transition-colors duration-200 hover:translate-x-1 inline-block">
+                            <Link href="/best-5g-phones" className="hover:text-orange-500 transition-colors duration-200 hover:translate-x-1 inline-block">
                                 Best 5G Phones
                             </Link>
                         </li>
                         <li>
-                            <Link href="/under-20000" className="hover:text-blue-400 transition-colors duration-200 hover:translate-x-1 inline-block">
+                            <Link href="/under-20000" className="hover:text-orange-500 transition-colors duration-200 hover:translate-x-1 inline-block">
                                 Under ₹20,000
                             </Link>
                         </li>
@@ -102,22 +102,22 @@ export default function Footer() {
                     <h3 className="text-white font-semibold mb-4 text-sm uppercase tracking-wider">Company</h3>
                     <ul className="space-y-2 text-sm">
                         <li>
-                            <Link href="/about" className="hover:text-blue-400 transition-colors duration-200 hover:translate-x-1 inline-block">
+                            <Link href="/about" className="hover:text-orange-500 transition-colors duration-200 hover:translate-x-1 inline-block">
                                 About Us
                             </Link>
                         </li>
                         <li>
-                            <Link href="/privacy" className="hover:text-blue-400 transition-colors duration-200 hover:translate-x-1 inline-block">
+                            <Link href="/privacy" className="hover:text-orange-500 transition-colors duration-200 hover:translate-x-1 inline-block">
                                 Privacy Policy
                             </Link>
                         </li>
                         <li>
-                            <Link href="/terms" className="hover:text-blue-400 transition-colors duration-200 hover:translate-x-1 inline-block">
+                            <Link href="/terms" className="hover:text-orange-500 transition-colors duration-200 hover:translate-x-1 inline-block">
                                 Terms of Service
                             </Link>
                         </li>
                         <li>
-                            <Link href="/transparency" className="hover:text-blue-400 transition-colors duration-200 hover:translate-x-1 inline-block">
+                            <Link href="/transparency" className="hover:text-orange-500 transition-colors duration-200 hover:translate-x-1 inline-block">
                                 Affiliate Disclosure
                             </Link>
                         </li>
@@ -134,16 +134,16 @@ export default function Footer() {
                         <input
                             type="email"
                             placeholder="Enter your email"
-                            className="bg-slate-800/50 border border-slate-700 rounded-lg px-4 py-2.5 text-sm text-white placeholder:text-slate-500 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all duration-200"
+                            className="bg-white/5 border border-white/10 rounded-lg px-4 py-2.5 text-sm text-white placeholder:text-slate-500 focus:outline-none focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 transition-all duration-200"
                         />
-                        <button className="bg-gradient-to-r from-blue-600 to-violet-600 hover:from-blue-700 hover:to-violet-700 text-white text-sm font-semibold py-2.5 rounded-lg transition-all duration-200 hover:shadow-lg hover:shadow-blue-500/20">
+                        <button className="bg-gradient-to-r from-orange-600 to-orange-500 hover:from-orange-700 hover:to-orange-600 text-white text-sm font-semibold py-2.5 rounded-lg transition-all duration-200 hover:shadow-lg hover:shadow-orange-500/20">
                             Subscribe
                         </button>
                     </form>
                 </div>
             </div>
 
-            <div className="relative max-w-6xl mx-auto px-4 py-6 border-t border-slate-800 text-center text-xs text-slate-500">
+            <div className="relative max-w-6xl mx-auto px-4 py-6 border-t border-white/5 text-center text-xs text-slate-500">
                 <p>
                     © {new Date().getFullYear()} Lifeline. All rights reserved.
                     <span className="mx-2">•</span>
