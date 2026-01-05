@@ -1,12 +1,11 @@
 'use client';
 
-import React, { useRef, useMemo, useEffect } from 'react';
+import React, { useRef, useMemo, Suspense } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { OrbitControls, PerspectiveCamera, Float, Stars } from '@react-three/drei';
 import * as THREE from 'three';
 import { HolographicDevice } from './HolographicDevice';
 import { nexusShaders } from '../../lib/nexus/NexusShaders';
-import gsap from 'gsap';
 
 const CosmicDust = ({ advantageScores }: { advantageScores: { device1: number, device2: number } }) => {
     const points = useMemo(() => {
@@ -86,29 +85,23 @@ const EnergyGrid = ({ advantageScores }: { advantageScores: { device1: number, d
 
 const CinematicCamera = ({ isBattleStarted, focus }: { isBattleStarted: boolean, focus: 'left' | 'right' | 'center' }) => {
     const { camera } = useThree();
-    
+
     useFrame(() => {
         let targetPos = new THREE.Vector3(0, 2, 10);
-        let targetLookAt = new THREE.Vector3(0, 0, 0);
 
         if (isBattleStarted) {
             if (focus === 'left') {
                 targetPos.set(-4, 1, 4);
-                targetLookAt.set(-3, 0, 0);
             } else if (focus === 'right') {
                 targetPos.set(4, 1, 4);
-                targetLookAt.set(3, 0, 0);
             } else {
                 targetPos.set(0, 1.5, 7);
-                targetLookAt.set(0, 0, 0);
             }
         } else {
             targetPos.set(0, 2, 10);
-            targetLookAt.set(0, 0, 0);
         }
 
         camera.position.lerp(targetPos, 0.05);
-        // We can't easily lerp lookAt without extra logic, but we can lerp a target object
     });
 
     return null;
@@ -118,56 +111,64 @@ interface NexusSceneProps {
     isBattleStarted: boolean;
     focus?: 'left' | 'right' | 'center';
     advantageScores?: { device1: number; device2: number };
+    image1?: string;
+    image2?: string;
 }
 
-export const NexusScene = ({ 
-    isBattleStarted, 
-    focus = 'center', 
-    advantageScores = { device1: 0, device2: 0 } 
+export const NexusScene = ({
+    isBattleStarted,
+    focus = 'center',
+    advantageScores = { device1: 0, device2: 0 },
+    image1,
+    image2
 }: NexusSceneProps) => {
     return (
         <div className="fixed inset-0 z-0 bg-black">
             <Canvas shadows gl={{ antialias: true }}>
-                <PerspectiveCamera makeDefault position={[0, 2, 10]} fov={50} />
-                <CinematicCamera isBattleStarted={isBattleStarted} focus={focus} />
-                
-                <OrbitControls
-                    enableZoom={false}
-                    enablePan={false}
-                    maxPolarAngle={Math.PI / 1.8}
-                    minPolarAngle={Math.PI / 2.5}
-                />
+                <Suspense fallback={null}>
+                    <PerspectiveCamera makeDefault position={[0, 2, 10]} fov={50} />
+                    <CinematicCamera isBattleStarted={isBattleStarted} focus={focus} />
 
-                <ambientLight intensity={0.2} />
-                <pointLight position={[10, 10, 10]} intensity={1.5} color="#4f46e5" />
-                <spotLight position={[-10, 10, 10]} angle={0.15} penumbra={1} intensity={2} color="#ec4899" />
-
-                <Stars radius={100} depth={50} count={5000} factor={4} saturation={0} fade speed={1} />
-                <CosmicDust advantageScores={advantageScores} />
-                <EnergyGrid advantageScores={advantageScores} />
-
-                <Float speed={2} rotationIntensity={0.5} floatIntensity={0.5}>
-                    <HolographicDevice 
-                        position={[-3, 0, 0]} 
-                        color="#3b82f6" 
-                        active={isBattleStarted && (focus === 'left' || focus === 'center')} 
-                        powerLevel={advantageScores.device1}
+                    <OrbitControls
+                        enableZoom={false}
+                        enablePan={false}
+                        maxPolarAngle={Math.PI / 1.8}
+                        minPolarAngle={Math.PI / 2.5}
                     />
-                </Float>
 
-                <Float speed={2} rotationIntensity={0.5} floatIntensity={0.5}>
-                    <HolographicDevice 
-                        position={[3, 0, 0]} 
-                        color="#ec4899" 
-                        active={isBattleStarted && (focus === 'right' || focus === 'center')} 
-                        powerLevel={advantageScores.device2}
-                    />
-                </Float>
+                    <ambientLight intensity={0.2} />
+                    <pointLight position={[10, 10, 10]} intensity={1.5} color="#4f46e5" />
+                    <spotLight position={[-10, 10, 10]} angle={0.15} penumbra={1} intensity={2} color="#ec4899" />
 
-                <mesh position={[0, -2, -5]} rotation-x={Math.PI / 2}>
-                    <ringGeometry args={[15, 15.2, 64]} />
-                    <meshBasicMaterial color="#4f46e5" transparent opacity={0.2} side={THREE.DoubleSide} />
-                </mesh>
+                    <Stars radius={100} depth={50} count={5000} factor={4} saturation={0} fade speed={1} />
+                    <CosmicDust advantageScores={advantageScores} />
+                    <EnergyGrid advantageScores={advantageScores} />
+
+                    <Float speed={2} rotationIntensity={0.5} floatIntensity={0.5}>
+                        <HolographicDevice
+                            position={[-3, 0, 0]}
+                            color="#3b82f6"
+                            imageUrl={image1}
+                            active={isBattleStarted && (focus === 'left' || focus === 'center')}
+                            powerLevel={advantageScores.device1}
+                        />
+                    </Float>
+
+                    <Float speed={2} rotationIntensity={0.5} floatIntensity={0.5}>
+                        <HolographicDevice
+                            position={[3, 0, 0]}
+                            color="#ec4899"
+                            imageUrl={image2}
+                            active={isBattleStarted && (focus === 'right' || focus === 'center')}
+                            powerLevel={advantageScores.device2}
+                        />
+                    </Float>
+
+                    <mesh position={[0, -2, -5]} rotation-x={Math.PI / 2}>
+                        <ringGeometry args={[15, 15.2, 64]} />
+                        <meshBasicMaterial color="#4f46e5" transparent opacity={0.2} side={THREE.DoubleSide} />
+                    </mesh>
+                </Suspense>
             </Canvas>
         </div>
     );

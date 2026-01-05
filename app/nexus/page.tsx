@@ -21,6 +21,8 @@ export default function NexusPage() {
                 isBattleStarted={isBattleStarted}
                 focus={focus}
                 advantageScores={advantageScores}
+                image1={selectedDevices[0]?.thumbnail}
+                image2={selectedDevices[1]?.thumbnail}
             />
 
             <NexusOverlay

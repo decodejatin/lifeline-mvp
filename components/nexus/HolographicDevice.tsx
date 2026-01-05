@@ -2,26 +2,32 @@
 
 import React, { useRef, useMemo } from 'react';
 import { useFrame } from '@react-three/fiber';
+import { useTexture } from '@react-three/drei';
 import * as THREE from 'three';
 import { nexusShaders } from '../../lib/nexus/NexusShaders';
 
 interface HolographicDeviceProps {
     position: [number, number, number];
     color: string;
+    imageUrl?: string;
     active?: boolean;
     powerLevel?: number;
 }
 
-export const HolographicDevice = ({ position, color, active = false, powerLevel = 0 }: HolographicDeviceProps) => {
+export const HolographicDevice = ({ position, color, imageUrl, active = false, powerLevel = 0 }: HolographicDeviceProps) => {
     const meshRef = useRef<THREE.Mesh>(null);
     const ringRef = useRef<THREE.Group>(null);
     const particlesRef = useRef<THREE.Points>(null);
 
+    // Default black texture if no imageUrl is provided
+    const texture = useTexture(imageUrl || 'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?q=80&w=800&auto=format&fit=crop');
+
     const uniforms = useMemo(() => ({
         uTime: { value: 0 },
         uColor: { value: new THREE.Color(color) },
-        uOpacity: { value: active ? 1.0 : 0.2 }
-    }), [color]);
+        uOpacity: { value: active ? 1.0 : 0.2 },
+        uTexture: { value: texture }
+    }), [color, texture]);
 
     // Internal particle system for high power states
     const particleGeometry = useMemo(() => {
@@ -46,14 +52,15 @@ export const HolographicDevice = ({ position, color, active = false, powerLevel 
         const time = clock.getElapsedTime();
 
         if (meshRef.current) {
-            meshRef.current.rotation.y = time * 0.5;
+            meshRef.current.rotation.y = time * 0.2;
             const floatSpeed = active ? 2 : 1;
             const floatIntensity = active ? 0.2 : 0.05;
             meshRef.current.position.y = position[1] + Math.sin(time * floatSpeed) * floatIntensity;
-
+            
             const mat = meshRef.current.material as THREE.ShaderMaterial;
             mat.uniforms.uTime.value = time;
             mat.uniforms.uOpacity.value = THREE.MathUtils.lerp(mat.uniforms.uOpacity.value, active ? 1.0 : 0.2, 0.1);
+            mat.uniforms.uTexture.value = texture;
         }
 
         if (ringRef.current) {

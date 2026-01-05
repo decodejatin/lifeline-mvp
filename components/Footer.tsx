@@ -63,7 +63,7 @@ export default function Footer() {
                             </svg>
                         </a>
                         <a
-                            href="#"
+                            href="https://github.com/decodejatin"
                             className="w-10 h-10 rounded-full bg-white/5 border border-white/10 hover:bg-gradient-to-r hover:from-orange-600 hover:to-orange-500 flex items-center justify-center transition-all duration-300 hover:scale-110 hover:shadow-lg hover:shadow-orange-500/20"
                         >
                             <span className="sr-only">GitHub</span>

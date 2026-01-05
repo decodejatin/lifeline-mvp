@@ -18,14 +18,14 @@ export const PRODUCTS = [
     slug: 'alpha-phone-x',
     title: 'Alpha Phone X',
     description: 'Compact flagship — good camera, long battery life.',
-    thumbnail: 'https://placehold.co/400x600/1e293b/ffffff?text=Alpha+X',
+    thumbnail: 'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?q=80&w=800&auto=format&fit=crop',
     currentPrices: [
-      { source: 'Amazon', price: 44999, url: 'https://amazon.example/alpha' },
-      { source: 'Flipkart', price: 42999, url: 'https://flipkart.example/alpha' }
+      { source: 'Amazon', price: 44999, url: '#' },
+      { source: 'Flipkart', price: 42999, url: '#' }
     ],
     affiliates: {
-      amazon: 'https://amazon.example/alpha?aff=demo',
-      flipkart: 'https://flipkart.example/alpha?aff=demo'
+      amazon: '#',
+      flipkart: '#'
     },
     priceHistory: [
       { recordedAt: '2025-12-01', price: 45999 },
@@ -48,14 +48,14 @@ export const PRODUCTS = [
     slug: 'beta-phone-pro',
     title: 'Beta Phone Pro',
     description: 'Balanced performance with clean software.',
-    thumbnail: 'https://placehold.co/400x600/3b82f6/ffffff?text=Beta+Pro',
+    thumbnail: 'https://images.unsplash.com/photo-1592890288564-76628a30a657?q=80&w=800&auto=format&fit=crop',
     currentPrices: [
-      { source: 'Amazon', price: 35999, url: 'https://amazon.example/beta' },
-      { source: 'Flipkart', price: 34999, url: 'https://flipkart.example/beta' }
+      { source: 'Amazon', price: 35999, url: '#' },
+      { source: 'Flipkart', price: 34999, url: '#' }
     ],
     affiliates: {
-      amazon: 'https://amazon.example/beta?aff=demo',
-      flipkart: 'https://flipkart.example/beta?aff=demo'
+      amazon: '#',
+      flipkart: '#'
     },
     priceHistory: [
       { recordedAt: '2025-11-01', price: 37999 },
@@ -75,17 +75,17 @@ export const PRODUCTS = [
   },
   {
     id: 'prod-3',
-    slug: 'gamma-ultra-5g', // Added a third one for variety
+    slug: 'gamma-ultra-5g',
     title: 'Gamma Ultra 5G',
     description: 'Ultimate camera flagship with 200MP sensor.',
-    thumbnail: 'https://placehold.co/400x600/10b981/ffffff?text=Gamma+Ultra',
+    thumbnail: 'https://images.unsplash.com/photo-1610945415295-d9bbf067e59c?q=80&w=800&auto=format&fit=crop',
     currentPrices: [
-      { source: 'Amazon', price: 89999, url: 'https://amazon.example/gamma' },
-      { source: 'Flipkart', price: 88999, url: 'https://flipkart.example/gamma' }
+      { source: 'Amazon', price: 89999, url: '#' },
+      { source: 'Flipkart', price: 88999, url: '#' }
     ],
     affiliates: {
-      amazon: 'https://amazon.example/gamma?aff=demo',
-      flipkart: 'https://flipkart.example/gamma?aff=demo'
+      amazon: '#',
+      flipkart: '#'
     },
     priceHistory: [
       { recordedAt: '2025-10-01', price: 92999 },

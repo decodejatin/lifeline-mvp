@@ -1,6 +1,6 @@
 export const nexusShaders = {
-    hologram: {
-        vertexShader: `
+  hologram: {
+    vertexShader: `
       varying vec2 vUv;
       varying vec3 vPosition;
       varying vec3 vNormal;
@@ -13,20 +13,24 @@ export const nexusShaders = {
         
         // Add a slight wave effect to the position
         vec3 pos = position;
-        pos.x += sin(pos.y * 10.0 + uTime * 2.0) * 0.02;
+        pos.x += sin(pos.y * 5.0 + uTime * 2.0) * 0.01;
         
         gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);
       }
     `,
-        fragmentShader: `
+    fragmentShader: `
       varying vec2 vUv;
       varying vec3 vPosition;
       varying vec3 vNormal;
       uniform float uTime;
       uniform vec3 uColor;
       uniform float uOpacity;
+      uniform sampler2D uTexture;
 
       void main() {
+        // Base texture color
+        vec4 texColor = texture2D(uTexture, vUv);
+        
         // Base holographic scanlines
         float scanline = sin(vPosition.y * 100.0 - uTime * 5.0) * 0.1 + 0.9;
         
@@ -39,16 +43,21 @@ export const nexusShaders = {
         // Flicker effect
         float flicker = sin(uTime * 20.0) * 0.05 + 0.95;
         
-        // Combine everything
-        vec3 finalColor = uColor * (scanline * hScanline + fresnel);
-        float alpha = uOpacity * (scanline * 0.5 + fresnel * 0.8) * flicker;
+        // Blend texture with holographic color
+        vec3 finalColor = mix(texColor.rgb, uColor, 0.4);
+        finalColor *= (scanline * hScanline + fresnel);
+        
+        float alpha = texColor.a * uOpacity * (scanline * 0.5 + fresnel * 0.8) * flicker;
+        
+        // Vertical fade out at top/bottom
+        alpha *= (1.0 - abs(vPosition.y / 0.9));
         
         gl_FragColor = vec4(finalColor, alpha);
       }
     `
-    },
-    energyField: {
-        vertexShader: `
+  },
+  energyField: {
+    vertexShader: `
       varying vec2 vUv;
       varying float vElevation;
       uniform float uTime;
@@ -66,7 +75,7 @@ export const nexusShaders = {
         gl_Position = projectionMatrix * viewMatrix * modelPosition;
       }
     `,
-        fragmentShader: `
+    fragmentShader: `
       varying vec2 vUv;
       varying float vElevation;
       uniform vec3 uColor;
@@ -83,5 +92,5 @@ export const nexusShaders = {
         gl_FragColor = vec4(color + lines, 0.8);
       }
     `
-    }
+  }
 };
