@@ -1,73 +1,81 @@
-"use client"
+'use client'
 import React from 'react'
 import { motion } from 'framer-motion'
+import { ShieldAlert, Zap, Target, Award, Info } from 'lucide-react'
 
-type Category = {
-    label: string
+interface ExpertVerdictProps {
     score: number
-    color: string
+    summary: string
+    verdict: 'Buy' | 'Wait' | 'Avoid'
+    subScores: { label: string; value: number }[]
 }
 
-export default function ExpertVerdict({ scores }: { scores: Record<string, number> }) {
-    const categories: Category[] = [
-        { label: 'Raw Power', score: scores.performance * 10, color: '#f97316' },
-        { label: 'Visual Engine', score: scores.display * 10, color: '#f97316' },
-        { label: 'Optics System', score: scores.camera * 10, color: '#64748b' },
-        { label: 'Endurance', score: scores.battery * 10, color: '#64748b' }
-    ]
+export default function ExpertVerdict({ score, summary, verdict, subScores }: ExpertVerdictProps) {
+    const getVerdictStyles = () => {
+        switch (verdict) {
+            case 'Buy': return 'text-emerald-500 bg-emerald-500/10 border-emerald-500/20'
+            case 'Wait': return 'text-amber-500 bg-amber-500/10 border-amber-500/20'
+            case 'Avoid': return 'text-rose-500 bg-rose-500/10 border-rose-500/20'
+        }
+    }
 
     return (
-        <div className="p-8 md:p-12 rounded-[40px] bg-black border border-white/10 shadow-2xl relative overflow-hidden group">
-            <div className="absolute inset-0 bg-gradient-to-br from-orange-500/5 to-transparent" />
+        <div className="py-20 border-t border-white/5 space-y-12">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
 
-            <div className="relative z-10 grid md:grid-cols-2 gap-12 items-center">
-                <div className="space-y-8">
-                    <div>
-                        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-orange-500/10 border border-orange-500/20 mb-4">
-                            <span className="w-2 h-2 rounded-full bg-orange-500" />
-                            <span className="text-[10px] font-black text-orange-400 uppercase tracking-widest">Lab Analysis</span>
+                {/* Direct Score Column */}
+                <div className="lg:col-span-1 space-y-8">
+                    <div className="p-10 glass-dark rounded-[3rem] border border-white/5 text-center relative overflow-hidden">
+                        <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-emerald-500 to-cyan-500" />
+                        <div className="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-4 italic">Lifeline Intelligence Score</div>
+                        <div className="text-8xl font-black text-white italic tracking-tighter mb-4">{score}<span className="text-2xl text-slate-700">/100</span></div>
+                        <div className={`inline-flex items-center gap-2 px-6 py-2 rounded-full border text-xs font-black uppercase tracking-widest ${getVerdictStyles()}`}>
+                            <Target size={14} /> Official Verdict: {verdict}
                         </div>
-                        <h2 className="text-4xl font-black text-white uppercase tracking-tighter leading-none">Expert <span className="text-orange-500">Verdict</span></h2>
-                        <p className="mt-4 text-slate-400 font-medium">Our neural processors have analyzed 200+ data points to generate this elite efficiency rating.</p>
                     </div>
 
-                    <div className="space-y-6">
-                        {categories.map((cat, i) => (
-                            <div key={cat.label} className="space-y-2">
-                                <div className="flex justify-between items-end">
-                                    <span className="text-xs font-black text-white uppercase tracking-widest">{cat.label}</span>
-                                    <span className="text-lg font-black text-orange-500">{cat.score}%</span>
-                                </div>
-                                <div className="h-1.5 w-full bg-white/5 rounded-full overflow-hidden">
-                                    <motion.div
-                                        initial={{ width: 0 }}
-                                        whileInView={{ width: `${cat.score}%` }}
-                                        viewport={{ once: true }}
-                                        transition={{ duration: 1, delay: i * 0.1 }}
-                                        className="h-full rounded-full"
-                                        style={{ backgroundColor: cat.color }}
-                                    />
-                                </div>
+                    <div className="grid grid-cols-2 gap-4">
+                        {subScores.map((s, i) => (
+                            <div key={i} className="p-6 glass-dark rounded-3xl border border-white/5">
+                                <div className="text-[8px] font-black text-slate-500 uppercase tracking-widest mb-1">{s.label}</div>
+                                <div className="text-xl font-black text-white italic">{s.value}%</div>
                             </div>
                         ))}
                     </div>
                 </div>
 
-                <div className="relative aspect-square flex items-center justify-center p-8">
-                    <div className="absolute inset-0 border-2 border-white/5 rounded-full animate-spin-slow" />
-                    <div className="absolute inset-4 border border-white/5 rounded-full border-dashed" />
+                {/* Narrative Verdict Column */}
+                <div className="lg:col-span-2 space-y-8">
+                    <div className="h-full flex flex-col justify-center p-12 glass-dark rounded-[3rem] border border-white/5">
+                        <div className="flex items-center gap-4 mb-8">
+                            <div className="w-12 h-12 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-emerald-500">
+                                <Award size={24} />
+                            </div>
+                            <h3 className="text-3xl font-black text-white uppercase italic tracking-tighter">The Final <span className="text-emerald-500">Synthesis</span></h3>
+                        </div>
+                        <p className="text-2xl text-slate-300 font-light leading-relaxed italic mb-10">
+                            "{summary}"
+                        </p>
 
-                    <div className="relative text-center">
-                        <motion.div
-                            initial={{ scale: 0.5, opacity: 0 }}
-                            whileInView={{ scale: 1, opacity: 1 }}
-                            className="text-[120px] font-black text-white tracking-tighter leading-none"
-                        >
-                            {scores.overall}
-                        </motion.div>
-                        <div className="text-xs font-black text-orange-500 uppercase tracking-[0.4em] -mt-4">Overall Score</div>
+                        <div className="flex flex-col sm:flex-row gap-6">
+                            <div className="flex-1 p-6 rounded-2xl bg-white/5 border border-white/5 flex items-start gap-4">
+                                <Zap className="text-emerald-500" size={20} />
+                                <div>
+                                    <div className="text-[10px] font-black text-white uppercase tracking-widest mb-1">Key Takeaway</div>
+                                    <p className="text-xs text-slate-400 font-medium">Top-tier performance with specialized focus on imaging efficiency.</p>
+                                </div>
+                            </div>
+                            <div className="flex-1 p-6 rounded-2xl bg-white/5 border border-white/5 flex items-start gap-4">
+                                <ShieldAlert className="text-rose-500" size={20} />
+                                <div>
+                                    <div className="text-[10px] font-black text-white uppercase tracking-widest mb-1">Risk Factor</div>
+                                    <p className="text-xs text-slate-400 font-medium">Marginal thermal throttling during 4K RAW capture cycles.</p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
+
             </div>
         </div>
     )

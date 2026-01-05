@@ -11,6 +11,8 @@ import MagneticButton from '../components/ui/magnetic-button'
 import ScrollReveal from '../components/ui/scroll-reveal'
 import TrustBanner from '../components/ui/trust-banner'
 import NewsletterSection from '../components/ui/newsletter-section'
+import PerformanceBenchmarks from '../components/PerformanceBenchmarks'
+import BrandShowcase from '../components/BrandShowcase'
 
 export default async function HomePage() {
   const products = PRODUCTS.slice(0, 6) // Show only 6 products
@@ -151,6 +153,7 @@ export default async function HomePage() {
         </section>
 
         <TrustBanner />
+        <BrandShowcase />
 
         {/* FEATURES SECTION */}
         <section id="features" className="relative py-32 px-4">
@@ -261,6 +264,7 @@ export default async function HomePage() {
           </div>
         </section>
 
+        <PerformanceBenchmarks />
         <NewsletterSection />
       </div>
     </>
