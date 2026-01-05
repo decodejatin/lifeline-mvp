@@ -88,23 +88,23 @@ export default async function HomePage() {
 
             {/* CTA Buttons */}
             <div className="flex flex-col sm:flex-row gap-6 justify-center items-center mb-16">
-              <MagneticButton href="/compare" strength={0.4}>
+              <MagneticButton href="/nexus" strength={0.4}>
                 <span className="flex items-center gap-2">
-                  Start Comparing
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                  Enter The Nexus (3D)
+                  <svg className="w-5 h-5 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
                   </svg>
                 </span>
               </MagneticButton>
 
               <Link
-                href="/products"
+                href="/compare"
                 className="group px-8 py-4 rounded-full font-semibold text-lg transition-all duration-300 bg-white/5 hover:bg-white/10 text-white border border-white/20 hover:border-white/40 backdrop-blur-sm"
               >
                 <span className="flex items-center gap-2">
-                  Browse All Phones
+                  Start Comparing
                   <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
                   </svg>
                 </span>
               </Link>
@@ -153,8 +153,15 @@ export default async function HomePage() {
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
               {[
+                {
+                  icon: '🎮',
+                  title: '3D Battle Arena',
+                  description: 'Experience gadget comparison like never before in our interactive, real-time 3D Nexus environment.',
+                  gradient: 'from-blue-600 to-indigo-600',
+                  href: '/nexus'
+                },
                 {
                   icon: '🤖',
                   title: 'AI Verdicts',
@@ -174,8 +181,9 @@ export default async function HomePage() {
                   gradient: 'from-pink-500 to-rose-500'
                 }
               ].map((feature, index) => (
-                <div
+                <Link
                   key={index}
+                  href={feature.href || '#'}
                   className="group relative p-8 rounded-2xl bg-gradient-to-br from-slate-900/50 to-slate-800/50 border border-white/10 backdrop-blur-sm hover:border-white/20 transition-all duration-300 overflow-hidden"
                 >
                   {/* Glow effect */}
@@ -199,7 +207,7 @@ export default async function HomePage() {
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                     </svg>
                   </div>
-                </div>
+                </Link>
               ))}
             </div>
           </div>

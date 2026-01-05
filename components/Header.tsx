@@ -76,6 +76,7 @@ export default function Header() {
 
     const navLinks = [
         { name: 'Products', href: '/products' },
+        { name: 'Nexus 3D', href: '/nexus' },
         { name: 'Admin', href: '/admin' },
     ]
 

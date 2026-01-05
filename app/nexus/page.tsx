@@ -1,37 +1,12 @@
 'use client';
 
-import React, { useEffect } from 'react';
-import Lenis from '@studio-freight/lenis';
+import React from 'react';
 import { NexusScene } from '../../components/nexus/NexusScene';
 import { NexusOverlay } from '../../components/nexus/NexusOverlay';
 import CustomCursor from '../../components/ui/custom-cursor';
 import FloatingNav from '../../components/ui/floating-nav';
 
 export default function NexusPage() {
-    useEffect(() => {
-        const lenis = new Lenis({
-            duration: 1.2,
-            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-            orientation: 'vertical',
-            gestureOrientation: 'vertical',
-            smoothWheel: true,
-            wheelMultiplier: 1,
-            touchMultiplier: 2,
-            infinite: false,
-        });
-
-        function raf(time: number) {
-            lenis.raf(time);
-            requestAnimationFrame(raf);
-        }
-
-        requestAnimationFrame(raf);
-
-        return () => {
-            lenis.destroy();
-        };
-    }, []);
-
     return (
         <main className="relative bg-black min-h-screen overflow-x-hidden">
             <CustomCursor />
