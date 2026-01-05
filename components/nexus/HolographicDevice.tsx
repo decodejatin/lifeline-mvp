@@ -9,28 +9,66 @@ interface HolographicDeviceProps {
     position: [number, number, number];
     color: string;
     active?: boolean;
+    powerLevel?: number;
 }
 
-export const HolographicDevice = ({ position, color, active = false }: HolographicDeviceProps) => {
+export const HolographicDevice = ({ position, color, active = false, powerLevel = 0 }: HolographicDeviceProps) => {
     const meshRef = useRef<THREE.Mesh>(null);
     const ringRef = useRef<THREE.Group>(null);
+    const particlesRef = useRef<THREE.Points>(null);
 
     const uniforms = useMemo(() => ({
         uTime: { value: 0 },
         uColor: { value: new THREE.Color(color) },
-        uOpacity: { value: active ? 0.8 : 0.4 }
-    }), [color, active]);
+        uOpacity: { value: active ? 1.0 : 0.2 }
+    }), [color]);
+
+    // Internal particle system for high power states
+    const particleGeometry = useMemo(() => {
+        const count = 50;
+        const pos = new Float32Array(count * 3);
+        const vel = new Float32Array(count * 3);
+        for (let i = 0; i < count; i++) {
+            pos[i * 3] = (Math.random() - 0.5) * 0.5;
+            pos[i * 3 + 1] = Math.random() * 2;
+            pos[i * 3 + 2] = (Math.random() - 0.5) * 0.5;
+            vel[i * 3] = (Math.random() - 0.5) * 0.01;
+            vel[i * 3 + 1] = Math.random() * 0.02;
+            vel[i * 3 + 2] = (Math.random() - 0.5) * 0.01;
+        }
+        const geo = new THREE.BufferGeometry();
+        geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+        return { geo, vel };
+    }, []);
 
     useFrame((state) => {
         const { clock } = state;
+        const time = clock.getElapsedTime();
+
         if (meshRef.current) {
-            meshRef.current.rotation.y = clock.getElapsedTime() * 0.5;
-            meshRef.current.position.y = position[1] + Math.sin(clock.getElapsedTime()) * 0.1;
-            (meshRef.current.material as THREE.ShaderMaterial).uniforms.uTime.value = clock.getElapsedTime();
+            meshRef.current.rotation.y = time * 0.5;
+            const floatSpeed = active ? 2 : 1;
+            const floatIntensity = active ? 0.2 : 0.05;
+            meshRef.current.position.y = position[1] + Math.sin(time * floatSpeed) * floatIntensity;
+
+            const mat = meshRef.current.material as THREE.ShaderMaterial;
+            mat.uniforms.uTime.value = time;
+            mat.uniforms.uOpacity.value = THREE.MathUtils.lerp(mat.uniforms.uOpacity.value, active ? 1.0 : 0.2, 0.1);
         }
+
         if (ringRef.current) {
-            ringRef.current.rotation.z = clock.getElapsedTime() * 0.2;
-            ringRef.current.rotation.x = clock.getElapsedTime() * 0.1;
+            ringRef.current.rotation.z = time * (0.2 + powerLevel * 0.05);
+            ringRef.current.rotation.x = time * (0.1 + powerLevel * 0.02);
+            ringRef.current.scale.setScalar(active ? 1.2 : 1.0);
+        }
+
+        if (particlesRef.current && active) {
+            const positions = particleGeometry.geo.attributes.position.array as Float32Array;
+            for (let i = 0; i < 50; i++) {
+                positions[i * 3 + 1] += particleGeometry.vel[i * 3 + 1] * (1 + powerLevel * 0.1);
+                if (positions[i * 3 + 1] > 2) positions[i * 3 + 1] = 0;
+            }
+            particleGeometry.geo.attributes.position.needsUpdate = true;
         }
     });
 
@@ -48,28 +86,28 @@ export const HolographicDevice = ({ position, color, active = false }: Holograph
                 />
             </mesh>
 
+            {/* Power Particles */}
+            <points ref={particlesRef} visible={active}>
+                <primitive object={particleGeometry.geo} attach="geometry" />
+                <pointsMaterial size={0.02} color={color} transparent opacity={0.5} blending={THREE.AdditiveBlending} />
+            </points>
+
             {/* Orbiting Rings */}
             <group ref={ringRef}>
                 <mesh rotation-x={Math.PI / 2}>
-                    <torusGeometry args={[1.5, 0.02, 16, 100]} />
-                    <meshBasicMaterial color={color} transparent opacity={0.3} />
+                    <torusGeometry args={[1.5, 0.01, 16, 100]} />
+                    <meshBasicMaterial color={color} transparent opacity={active ? 0.4 : 0.1} />
                 </mesh>
                 <mesh rotation-y={Math.PI / 2}>
-                    <torusGeometry args={[1.2, 0.01, 16, 100]} />
-                    <meshBasicMaterial color={color} transparent opacity={0.2} />
+                    <torusGeometry args={[1.3, 0.005, 16, 100]} />
+                    <meshBasicMaterial color={color} transparent opacity={active ? 0.3 : 0.05} />
                 </mesh>
             </group>
 
             {/* Ground platform */}
             <mesh position={[0, -1.2, 0]} rotation-x={-Math.PI / 2}>
-                <cylinderGeometry args={[1, 1.2, 0.1, 32]} />
-                <meshBasicMaterial color={color} transparent opacity={0.1} wireframe />
-            </mesh>
-
-            {/* Light beam */}
-            <mesh position={[0, -0.6, 0]}>
-                <cylinderGeometry args={[0.01, 0.5, 1.2, 32]} />
-                <meshBasicMaterial color={color} transparent opacity={0.05} />
+                <cylinderGeometry args={[1, 1.2, 0.05, 32]} />
+                <meshBasicMaterial color={color} transparent opacity={active ? 0.2 : 0.05} wireframe />
             </mesh>
         </group>
     );
