@@ -5,6 +5,7 @@ import { Metadata } from 'next'
 import SortSelector from '../../components/SortSelector'
 import GradientOrb from '../../components/ui/gradient-orb'
 import TextReveal from '../../components/animations/TextReveal'
+import ScrollReveal from '../../components/ui/scroll-reveal'
 
 type Props = {
   searchParams?: {
@@ -67,76 +68,84 @@ export default async function ProductsPage({ searchParams }: Props) {
       <div className="max-w-7xl mx-auto px-4 py-20 relative z-10">
         <section className="space-y-16">
           <div className="text-center max-w-3xl mx-auto space-y-6">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-orange-500/10 border border-orange-500/20 mb-4">
-              <span className="w-2 h-2 rounded-full bg-orange-500 animate-pulse" />
-              <span className="text-[10px] font-black text-orange-400 uppercase tracking-[0.2em]">Global Product Matrix</span>
-            </div>
+            <ScrollReveal direction="down">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-orange-500/10 border border-orange-500/20 mb-4">
+                <span className="w-2 h-2 rounded-full bg-orange-500 animate-pulse" />
+                <span className="text-[10px] font-black text-orange-400 uppercase tracking-[0.2em]">Global Product Matrix</span>
+              </div>
+            </ScrollReveal>
             <h1 className="text-5xl md:text-8xl font-black mb-6 text-white uppercase tracking-tighter">
               <TextReveal as="span">Explore</TextReveal>{" "}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-orange-600">
-                <TextReveal as="span">Mobiles</TextReveal>
-              </span>
+              <ScrollReveal direction="up" delay={0.3} width="fit-content" className="inline-block">
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-orange-600">
+                  <TextReveal as="span">Mobiles</TextReveal>
+                </span>
+              </ScrollReveal>
             </h1>
-            <p className="text-slate-400 text-lg md:text-xl font-medium max-w-2xl mx-auto">
-              Surgical speculation on the latest hardware. Filter by tactical budget and analyze market shifts.
-            </p>
+            <ScrollReveal direction="up" delay={0.4}>
+              <p className="text-slate-400 text-lg md:text-xl font-medium max-w-2xl mx-auto">
+                Surgical speculation on the latest hardware. Filter by tactical budget and analyze market shifts.
+              </p>
+            </ScrollReveal>
           </div>
 
           {/* Premium Filter Bar */}
-          <div className="p-1 rounded-[40px] bg-gradient-to-br from-orange-500/20 to-slate-500/10 backdrop-blur-3xl border border-white/5 shadow-2xl">
-            <div className="p-8 md:p-10 rounded-[38px] bg-black/60">
-              <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
-                {/* Search */}
-                <div className="space-y-3">
-                  <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest ml-1">Device Search</label>
-                  <form method="get" className="relative group">
-                    <input
-                      name="q"
-                      defaultValue={q}
-                      placeholder="e.g. iPhone 15 Pro..."
-                      className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white placeholder:text-slate-700 focus:outline-none focus:ring-2 focus:ring-orange-500/30 transition-all font-bold"
-                    />
-                    <button type="submit" className="absolute right-2 top-2 p-2.5 bg-white text-black hover:bg-orange-600 hover:text-white rounded-xl transition-all shadow-lg active:scale-95">
-                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                      </svg>
-                    </button>
-                  </form>
-                </div>
+          <ScrollReveal direction="up" delay={0.5}>
+            <div className="p-1 rounded-[40px] bg-gradient-to-br from-orange-500/20 to-slate-500/10 backdrop-blur-3xl border border-white/5 shadow-2xl">
+              <div className="p-8 md:p-10 rounded-[38px] bg-black/60">
+                <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+                  {/* Search */}
+                  <div className="space-y-3">
+                    <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest ml-1">Device Search</label>
+                    <form method="get" className="relative group">
+                      <input
+                        name="q"
+                        defaultValue={q}
+                        placeholder="e.g. iPhone 15 Pro..."
+                        className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white placeholder:text-slate-700 focus:outline-none focus:ring-2 focus:ring-orange-500/30 transition-all font-bold"
+                      />
+                      <button type="submit" className="absolute right-2 top-2 p-2.5 bg-white text-black hover:bg-orange-600 hover:text-white rounded-xl transition-all shadow-lg active:scale-95">
+                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                        </svg>
+                      </button>
+                    </form>
+                  </div>
 
-                {/* Budget */}
-                <div className="space-y-3">
-                  <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest ml-1">Tactical Budget</label>
-                  <form method="get" className="relative group">
-                    <span className="absolute left-6 top-4 text-orange-500 font-black">₹</span>
-                    <input
-                      name="maxPrice"
-                      defaultValue={maxPrice}
-                      inputMode="numeric"
-                      placeholder="e.g. 80000"
-                      className="w-full bg-white/5 border border-white/10 rounded-2xl pl-12 pr-6 py-4 text-white placeholder:text-slate-700 focus:outline-none focus:ring-2 focus:ring-orange-500/30 transition-all font-black"
-                    />
-                  </form>
-                </div>
+                  {/* Budget */}
+                  <div className="space-y-3">
+                    <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest ml-1">Tactical Budget</label>
+                    <form method="get" className="relative group">
+                      <span className="absolute left-6 top-4 text-orange-500 font-black">₹</span>
+                      <input
+                        name="maxPrice"
+                        defaultValue={maxPrice}
+                        inputMode="numeric"
+                        placeholder="e.g. 80000"
+                        className="w-full bg-white/5 border border-white/10 rounded-2xl pl-12 pr-6 py-4 text-white placeholder:text-slate-700 focus:outline-none focus:ring-2 focus:ring-orange-500/30 transition-all font-black"
+                      />
+                    </form>
+                  </div>
 
-                {/* Sort */}
-                <div className="space-y-3">
-                  <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest ml-1">Priority Order</label>
-                  <SortSelector defaultValue={sort} />
-                </div>
+                  {/* Sort */}
+                  <div className="space-y-3">
+                    <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest ml-1">Priority Order</label>
+                    <SortSelector defaultValue={sort} />
+                  </div>
 
-                {/* Clear */}
-                <div className="flex items-end">
-                  <a
-                    href="/products"
-                    className="w-full py-4.5 text-center bg-white/5 hover:bg-orange-600 text-white rounded-2xl font-black uppercase tracking-widest text-[10px] border border-white/10 transition-all active:scale-95 flex items-center justify-center h-[58px]"
-                  >
-                    Reset Parameters
-                  </a>
+                  {/* Clear */}
+                  <div className="flex items-end">
+                    <a
+                      href="/products"
+                      className="w-full py-4.5 text-center bg-white/5 hover:bg-orange-600 text-white rounded-2xl font-black uppercase tracking-widest text-[10px] border border-white/10 transition-all active:scale-95 flex items-center justify-center h-[58px]"
+                    >
+                      Reset Parameters
+                    </a>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
+          </ScrollReveal>
 
           {/* Products Grid */}
           <div className="space-y-8">
@@ -160,7 +169,9 @@ export default async function ProductsPage({ searchParams }: Props) {
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
                 {filtered.map((p, index) => (
-                  <FlipCard key={p.id} product={p as any} index={index} />
+                  <ScrollReveal key={p.id} direction="up" delay={index * 0.05}>
+                    <FlipCard product={p as any} index={index} />
+                  </ScrollReveal>
                 ))}
               </div>
             )}

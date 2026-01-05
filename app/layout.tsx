@@ -58,7 +58,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" className={`${inter.variable} ${outfit.variable}`}>
       <head />
-      <body className="min-h-screen bg-slate-950 font-body flex flex-col">
+      <body className="min-h-screen bg-background text-foreground font-body flex flex-col">
         <SmoothScrollProvider>
           <Header />
           <main className="flex-grow w-full pt-24">{children}</main>

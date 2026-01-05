@@ -11,6 +11,7 @@ import ExpertVerdict from '../../../components/ExpertVerdict'
 import ReviewMatrix from '../../../components/ReviewMatrix'
 import PriceAlert from '../../../components/PriceAlert'
 import { calculateScores } from '../../../lib/scoring'
+import ScrollReveal from '../../../components/ui/scroll-reveal'
 
 type Props = { params: { slug: string } }
 
@@ -105,48 +106,56 @@ export default async function ProductPage({ params }: Props) {
                   </div>
 
                   <div className="flex-1 space-y-10">
-                    <div className="space-y-4">
-                      <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-orange-500/10 border border-orange-500/20 text-orange-400 text-[10px] font-black uppercase tracking-widest">
-                        High Priority Asset
+                    <ScrollReveal direction="up" delay={0.1}>
+                      <div className="space-y-4">
+                        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-orange-500/10 border border-orange-500/20 text-orange-400 text-[10px] font-black uppercase tracking-widest">
+                          High Priority Asset
+                        </div>
+                        <h1 className="text-5xl md:text-8xl font-black text-white uppercase tracking-tighter leading-[0.85]">
+                          {product.title}
+                        </h1>
+                        <p className="text-xl text-slate-400 font-medium leading-relaxed max-w-xl">
+                          {product.description}
+                        </p>
                       </div>
-                      <h1 className="text-5xl md:text-8xl font-black text-white uppercase tracking-tighter leading-[0.85]">
-                        {product.title}
-                      </h1>
-                      <p className="text-xl text-slate-400 font-medium leading-relaxed max-w-xl">
-                        {product.description}
-                      </p>
-                    </div>
+                    </ScrollReveal>
 
-                    <div className="grid grid-cols-3 gap-8 py-10 border-y border-white/5">
-                      <div className="space-y-2">
-                        <div className="text-[10px] font-black text-slate-600 uppercase tracking-widest">Efficiency</div>
-                        <div className="text-xl font-black text-white uppercase">{s.processor?.name.split(' ')[0] || 'N/A'}</div>
+                    <ScrollReveal direction="up" delay={0.2}>
+                      <div className="grid grid-cols-3 gap-8 py-10 border-y border-white/5">
+                        <div className="space-y-2">
+                          <div className="text-[10px] font-black text-slate-600 uppercase tracking-widest">Efficiency</div>
+                          <div className="text-xl font-black text-white uppercase">{s.processor?.name.split(' ')[0] || 'N/A'}</div>
+                        </div>
+                        <div className="space-y-2">
+                          <div className="text-[10px] font-black text-slate-600 uppercase tracking-widest">Sensor</div>
+                          <div className="text-xl font-black text-white uppercase">{s.camera?.main.split(' ')[0] || 'N/A'}</div>
+                        </div>
+                        <div className="space-y-2">
+                          <div className="text-[10px] font-black text-slate-600 uppercase tracking-widest">Matrix</div>
+                          <div className="text-xl font-black text-white uppercase">{s.display?.size.split(' ')[0] || 'N/A'}</div>
+                        </div>
                       </div>
-                      <div className="space-y-2">
-                        <div className="text-[10px] font-black text-slate-600 uppercase tracking-widest">Sensor</div>
-                        <div className="text-xl font-black text-white uppercase">{s.camera?.main.split(' ')[0] || 'N/A'}</div>
-                      </div>
-                      <div className="space-y-2">
-                        <div className="text-[10px] font-black text-slate-600 uppercase tracking-widest">Matrix</div>
-                        <div className="text-xl font-black text-white uppercase">{s.display?.size.split(' ')[0] || 'N/A'}</div>
-                      </div>
-                    </div>
+                    </ScrollReveal>
                   </div>
                 </div>
               </div>
             </section>
 
             {/* Expert Verdict */}
-            <ExpertVerdict scores={scores} />
+            <ScrollReveal direction="up">
+              <ExpertVerdict scores={scores} />
+            </ScrollReveal>
 
             {/* Price Battle Section */}
-            <section className="space-y-12">
-              <div className="flex items-center gap-8">
-                <h2 className="text-3xl font-black text-white uppercase tracking-tighter whitespace-nowrap">Market Intelligence</h2>
-                <div className="h-px w-full bg-gradient-to-r from-white/10 to-transparent" />
-              </div>
-              <PriceComparison prices={product.currentPrices} />
-            </section>
+            <ScrollReveal direction="up">
+              <section className="space-y-12">
+                <div className="flex items-center gap-8">
+                  <h2 className="text-3xl font-black text-white uppercase tracking-tighter whitespace-nowrap">Market Intelligence</h2>
+                  <div className="h-px w-full bg-gradient-to-r from-white/10 to-transparent" />
+                </div>
+                <PriceComparison prices={product.currentPrices} />
+              </section>
+            </ScrollReveal>
 
             {/* History Section */}
             <section className="space-y-12">
