@@ -21,17 +21,17 @@ export default async function ComparePage({ searchParams }: Props) {
 
       {/* Background Gradients */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none -z-10">
-        <GradientOrb color1="rgba(249, 115, 22, 0.1)" color2="rgba(0, 0, 0, 0)" size={600} top="-10%" left="-10%" />
-        <GradientOrb color1="rgba(249, 115, 22, 0.05)" color2="rgba(0, 0, 0, 0)" size={500} bottom="10%" right="-10%" />
+        <GradientOrb color1="rgba(16, 185, 129, 0.1)" color2="rgba(0, 0, 0, 0)" size={600} top="-10%" left="-10%" />
+        <GradientOrb color1="rgba(6, 182, 212, 0.05)" color2="rgba(0, 0, 0, 0)" size={500} bottom="10%" right="-10%" />
       </div>
 
       <div className="max-w-7xl mx-auto px-4 py-16 relative z-10">
         <div className="text-center mb-16">
-          <div className="inline-block px-4 py-1.5 mb-6 rounded-full bg-white/5 border border-white/10 text-orange-500 text-[10px] font-black uppercase tracking-[0.3em]">
+          <div className="inline-block px-4 py-1.5 mb-6 rounded-full bg-white/5 border border-white/10 text-emerald-500 text-[10px] font-black uppercase tracking-[0.3em]">
             Precision Comparison
           </div>
-          <h1 className="text-5xl md:text-7xl font-black mb-6 font-heading tracking-tighter text-white uppercase">
-            Spec <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 via-orange-500 to-orange-600">Battleground</span>
+          <h1 className="text-5xl md:text-7xl font-black mb-6 font-heading tracking-tighter text-white uppercase italic">
+            Spec <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-emerald-500 to-cyan-600">Battleground</span>
           </h1>
           <p className="text-slate-400 text-lg md:text-xl max-w-2xl mx-auto font-medium">
             Deploy two titans. Analyze every sensor, pixel, and megahertz in high fidelity.
@@ -48,10 +48,10 @@ export default async function ComparePage({ searchParams }: Props) {
           ) : (
             <div className="space-y-20">
               <div className="relative group p-12 text-center rounded-[40px] bg-white/5 border border-white/10 backdrop-blur-xl max-w-2xl mx-auto overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-to-br from-orange-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                 <div className="relative z-10">
                   <div className="text-7xl mb-6 animate-float">⚔️</div>
-                  <h3 className="text-3xl font-black text-white uppercase tracking-tighter">Choose Your Contenders</h3>
+                  <h3 className="text-3xl font-black text-white uppercase tracking-tighter italic">Choose Your Contenders</h3>
                   <p className="text-slate-400 mt-4 font-medium">Select two smartphones above to begin the deep spec-analysis.</p>
                 </div>
               </div>
@@ -65,9 +65,9 @@ export default async function ComparePage({ searchParams }: Props) {
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                   {[
-                    { a: 'alpha-phone-x', b: 'beta-phone-pro', title: 'Performance War', gradient: 'from-orange-600/10 to-transparent' },
-                    { a: 'beta-phone-pro', b: 'gamma-ultra-5g', title: 'Camera Siege', gradient: 'from-orange-600/10 to-transparent' },
-                    { a: 'gamma-ultra-5g', b: 'alpha-phone-x', title: 'Endurance Clash', gradient: 'from-orange-600/10 to-transparent' }
+                    { a: 'alpha-phone-x', b: 'beta-phone-pro', title: 'Performance War', gradient: 'from-emerald-600/10 to-transparent' },
+                    { a: 'beta-phone-pro', b: 'gamma-ultra-5g', title: 'Camera Siege', gradient: 'from-emerald-600/10 to-transparent' },
+                    { a: 'gamma-ultra-5g', b: 'alpha-phone-x', title: 'Endurance Clash', gradient: 'from-emerald-600/10 to-transparent' }
                   ].map((battle, i) => (
                     <a
                       key={i}
@@ -76,7 +76,7 @@ export default async function ComparePage({ searchParams }: Props) {
                     >
                       <div className={`absolute inset-0 bg-gradient-to-br ${battle.gradient} opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
                       <div className="relative z-10">
-                        <div className="text-[10px] font-black text-orange-500 uppercase tracking-widest mb-4">{battle.title}</div>
+                        <div className="text-[10px] font-black text-emerald-500 uppercase tracking-widest mb-4">{battle.title}</div>
                         <div className="flex flex-col gap-2">
                           <div className="text-lg font-black text-white group-hover:text-orange-200 transition-colors truncate">
                             {productList.find(p => p.slug === battle.a)?.title || 'Phone A'}

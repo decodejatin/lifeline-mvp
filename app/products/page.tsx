@@ -61,23 +61,23 @@ export default async function ProductsPage({ searchParams }: Props) {
       {/* Background elements */}
       <div className="fixed inset-0 pointer-events-none -z-10 bg-black" />
       <div className="fixed inset-0 pointer-events-none -z-10">
-        <GradientOrb color1="rgba(249, 115, 22, 0.15)" color2="rgba(0, 0, 0, 0)" size={700} top="-10%" left="-10%" />
-        <GradientOrb color1="rgba(71, 85, 105, 0.1)" color2="rgba(0, 0, 0, 0)" size={600} bottom="10%" right="-10%" />
+        <GradientOrb color1="rgba(16, 185, 129, 0.15)" color2="rgba(0, 0, 0, 0)" size={700} top="-10%" left="-10%" />
+        <GradientOrb color1="rgba(6, 182, 212, 0.1)" color2="rgba(0, 0, 0, 0)" size={600} bottom="10%" right="-10%" />
       </div>
 
       <div className="max-w-7xl mx-auto px-4 py-20 relative z-10">
         <section className="space-y-16">
           <div className="text-center max-w-3xl mx-auto space-y-6">
             <ScrollReveal direction="down">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-orange-500/10 border border-orange-500/20 mb-4">
-                <span className="w-2 h-2 rounded-full bg-orange-500 animate-pulse" />
-                <span className="text-[10px] font-black text-orange-400 uppercase tracking-[0.2em]">Global Product Matrix</span>
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 mb-4">
+                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                <span className="text-[10px] font-black text-emerald-400 uppercase tracking-[0.2em]">Global Product Matrix</span>
               </div>
             </ScrollReveal>
             <h1 className="text-5xl md:text-8xl font-black mb-6 text-white uppercase tracking-tighter">
               <TextReveal as="span">Explore</TextReveal>{" "}
               <ScrollReveal direction="up" delay={0.3} width="fit-content" className="inline-block">
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-orange-600">
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-500">
                   <TextReveal as="span">Mobiles</TextReveal>
                 </span>
               </ScrollReveal>
@@ -91,7 +91,7 @@ export default async function ProductsPage({ searchParams }: Props) {
 
           {/* Premium Filter Bar */}
           <ScrollReveal direction="up" delay={0.5}>
-            <div className="p-1 rounded-[40px] bg-gradient-to-br from-orange-500/20 to-slate-500/10 backdrop-blur-3xl border border-white/5 shadow-2xl">
+            <div className="p-1 rounded-[40px] bg-gradient-to-br from-emerald-500/20 to-slate-500/10 backdrop-blur-3xl border border-white/5 shadow-2xl">
               <div className="p-8 md:p-10 rounded-[38px] bg-black/60">
                 <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
                   {/* Search */}
@@ -104,7 +104,7 @@ export default async function ProductsPage({ searchParams }: Props) {
                         placeholder="e.g. iPhone 15 Pro..."
                         className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white placeholder:text-slate-700 focus:outline-none focus:ring-2 focus:ring-orange-500/30 transition-all font-bold"
                       />
-                      <button type="submit" className="absolute right-2 top-2 p-2.5 bg-white text-black hover:bg-orange-600 hover:text-white rounded-xl transition-all shadow-lg active:scale-95">
+                      <button type="submit" className="absolute right-2 top-2 p-2.5 bg-emerald-500 text-black hover:bg-emerald-400 rounded-xl transition-all shadow-lg active:scale-95">
                         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                         </svg>
@@ -116,13 +116,13 @@ export default async function ProductsPage({ searchParams }: Props) {
                   <div className="space-y-3">
                     <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest ml-1">Tactical Budget</label>
                     <form method="get" className="relative group">
-                      <span className="absolute left-6 top-4 text-orange-500 font-black">₹</span>
+                      <span className="absolute left-6 top-4 text-emerald-500 font-black">₹</span>
                       <input
                         name="maxPrice"
                         defaultValue={maxPrice}
                         inputMode="numeric"
                         placeholder="e.g. 80000"
-                        className="w-full bg-white/5 border border-white/10 rounded-2xl pl-12 pr-6 py-4 text-white placeholder:text-slate-700 focus:outline-none focus:ring-2 focus:ring-orange-500/30 transition-all font-black"
+                        className="w-full bg-white/5 border border-white/10 rounded-2xl pl-12 pr-6 py-4 text-white placeholder:text-slate-700 focus:outline-none focus:ring-2 focus:ring-emerald-500/30 transition-all font-black"
                       />
                     </form>
                   </div>
@@ -137,7 +137,7 @@ export default async function ProductsPage({ searchParams }: Props) {
                   <div className="flex items-end">
                     <a
                       href="/products"
-                      className="w-full py-4.5 text-center bg-white/5 hover:bg-orange-600 text-white rounded-2xl font-black uppercase tracking-widest text-[10px] border border-white/10 transition-all active:scale-95 flex items-center justify-center h-[58px]"
+                      className="w-full py-4.5 text-center bg-white/5 hover:bg-emerald-600 text-white rounded-2xl font-black uppercase tracking-widest text-[10px] border border-white/10 transition-all active:scale-95 flex items-center justify-center h-[58px]"
                     >
                       Reset Parameters
                     </a>

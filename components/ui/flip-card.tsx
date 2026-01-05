@@ -119,7 +119,7 @@ export default function FlipCard({ product, index }: FlipCardProps) {
 
                         <div className="space-y-3">
                             <Link
-                                href={`/products/${product.id}`}
+                                href={`/products/${product.slug}`}
                                 className="block w-full py-3 bg-white text-purple-900 rounded-xl font-semibold text-center hover:bg-blue-100 transition-colors"
                             >
                                 View Details
