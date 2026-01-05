@@ -31,26 +31,33 @@ export const nexusShaders = {
         // Base texture color
         vec4 texColor = texture2D(uTexture, vUv);
         
-        // Base holographic scanlines
-        float scanline = sin(vPosition.y * 100.0 - uTime * 5.0) * 0.1 + 0.9;
+        // Base holographic scanlines (very subtle)
+        float scanline = sin(vPosition.y * 120.0 - uTime * 3.0) * 0.05 + 0.95;
         
-        // Horizontal scanlines
-        float hScanline = sin(vPosition.x * 10.0 + uTime) * 0.05 + 0.95;
+        // Horizontal scanlines (very subtle)
+        float hScanline = sin(vPosition.x * 15.0 + uTime) * 0.02 + 0.98;
         
-        // Fresnel effect for edge glow
-        float fresnel = pow(1.0 - dot(vNormal, vec3(0,0,1)), 3.0);
+        // Fresnel effect for edge glow (toned down)
+        float fresnel = pow(1.0 - dot(vNormal, vec3(0,0,1)), 4.0);
         
-        // Flicker effect
-        float flicker = sin(uTime * 20.0) * 0.05 + 0.95;
+        // Flicker effect (very subtle)
+        float flicker = sin(uTime * 15.0) * 0.01 + 0.99;
         
         // Blend texture with holographic color
-        vec3 finalColor = mix(texColor.rgb, uColor, 0.4);
-        finalColor *= (scanline * hScanline + fresnel);
+        // Reduced tint from 0.4 to 0.1 for high clarity
+        vec3 finalColor = mix(texColor.rgb, uColor, 0.1);
         
-        float alpha = texColor.a * uOpacity * (scanline * 0.5 + fresnel * 0.8) * flicker;
+        // Apply scanlines and fresnel more subtly to color
+        float intensity = mix(1.0, scanline * hScanline + fresnel * 0.5, 0.15);
+        finalColor *= intensity;
         
-        // Vertical fade out at top/bottom
-        alpha *= (1.0 - abs(vPosition.y / 0.9));
+        // Alpha calculation - prioritize texture alpha
+        float alpha = texColor.a * uOpacity * flicker;
+        // Keep a bit of the scanline/fresnel look in the alpha
+        alpha *= mix(1.0, (scanline * 0.8 + fresnel * 0.2), 0.2);
+        
+        // Vertical fade out at top/bottom (adjusted for larger visible area)
+        alpha *= (1.0 - abs(vPosition.y / 0.95));
         
         gl_FragColor = vec4(finalColor, alpha);
       }
